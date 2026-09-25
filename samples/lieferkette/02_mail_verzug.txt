@@ -1,0 +1,5 @@
+Von: logistik@ningbo-precision.example
+Betreff: Verzug PO-4471 / PO-4474
+
+Hallo, der Container MSKU1234567 fuer Bestellung PO-4471 steht noch im Hafen Ningbo. Wir rechnen mit einer Verzoegerung von ca 2,5 Wochen, Lieferung KW 44 statt KW 41. PO-4474 ist ebenfalls betroffen (Verzug 10 Tage).
+Gruesse, Li Wei

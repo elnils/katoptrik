@@ -1,0 +1,42 @@
+{
+  "scenarios": [
+    {
+      "id": "drohnen-ostsee",
+      "title": "Drohnenueberflug Ostsee",
+      "profile": "lagebild",
+      "files": [
+        "drohnen-ostsee/01_handnotiz_wache_scan.png",
+        "drohnen-ostsee/02_lagemeldung_wsp_kiel.pdf",
+        "drohnen-ostsee/03_anrufnotizen_leitstelle.txt",
+        "drohnen-ostsee/04_radar_auswertung.pdf",
+        "drohnen-ostsee/05_sensorliste.xlsx"
+      ],
+      "later": [
+        "drohnen-ostsee/nachtrag/06_nachmeldung_marine.pdf"
+      ]
+    },
+    {
+      "id": "lieferkette",
+      "title": "Lieferketten-Monitoring",
+      "profile": "lieferkette",
+      "files": [
+        "lieferkette/01_lieferanten_bestellungen.xlsx",
+        "lieferkette/02_mail_verzug.txt",
+        "lieferkette/03_qualitaetsbericht.pdf"
+      ],
+      "later": [
+        "lieferkette/nachtrag/04_streikmeldung_hafen.pdf"
+      ]
+    },
+    {
+      "id": "netzwerk",
+      "title": "Netzwerkanalyse",
+      "profile": "netzwerk",
+      "files": [
+        "netzwerk/01_kontakte.xlsx",
+        "netzwerk/02_ermittlungsbericht.pdf"
+      ],
+      "later": []
+    }
+  ]
+}
