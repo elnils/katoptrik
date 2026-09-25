@@ -13,7 +13,53 @@
       ],
       "later": [
         "drohnen-ostsee/nachtrag/06_nachmeldung_marine.pdf"
-      ]
+      ],
+      "truth": null
+    },
+    {
+      "id": "grosslage-ostsee",
+      "title": "Grosslage Ostsee: 4 Naechte, 33 Quellen, 9 Formate",
+      "profile": "lagebild",
+      "files": [
+        "grosslage-ostsee/ais_export_schiffe.csv",
+        "grosslage-ostsee/anrufnotizen_leitstelle_2209.txt",
+        "grosslage-ostsee/anrufnotizen_leitstelle_2309.txt",
+        "grosslage-ostsee/anrufnotizen_leitstelle_2409.txt",
+        "grosslage-ostsee/detektionssystem_export.json",
+        "grosslage-ostsee/fax_hafenbehoerde_rostock_scan.pdf",
+        "grosslage-ostsee/handnotiz_i2_scan.png",
+        "grosslage-ostsee/handnotiz_i5_scan.png",
+        "grosslage-ostsee/handnotiz_i7_scan.png",
+        "grosslage-ostsee/handnotiz_i8_scan.png",
+        "grosslage-ostsee/lagemeldung_wsp_i1_kiel.pdf",
+        "grosslage-ostsee/lagemeldung_wsp_i2_warnemuende.pdf",
+        "grosslage-ostsee/lagemeldung_wsp_i3_ruegen.pdf",
+        "grosslage-ostsee/lagemeldung_wsp_i4_fehmarnbelt.pdf",
+        "grosslage-ostsee/lagemeldung_wsp_i6_travemuende.pdf",
+        "grosslage-ostsee/lagemeldung_wsp_i7_heiligenhafen.pdf",
+        "grosslage-ostsee/lagemeldung_wsp_i8_kiel.pdf",
+        "grosslage-ostsee/lagevermerk_bpol_see.docx",
+        "grosslage-ostsee/mail_01_0923.eml",
+        "grosslage-ostsee/mail_02_0923.eml",
+        "grosslage-ostsee/mail_03_0924.eml",
+        "grosslage-ostsee/mail_04_0924.eml",
+        "grosslage-ostsee/mail_05_0925.eml",
+        "grosslage-ostsee/mail_06_0925.eml",
+        "grosslage-ostsee/pressemitteilung.html",
+        "grosslage-ostsee/radar_auswertung_2209.pdf",
+        "grosslage-ostsee/radar_auswertung_2309.pdf",
+        "grosslage-ostsee/radar_auswertung_2409.pdf",
+        "grosslage-ostsee/radar_auswertung_2509.pdf",
+        "grosslage-ostsee/sensor_akustik-staberhuk.xlsx",
+        "grosslage-ostsee/sensor_rf-fehmarn-nord.xlsx",
+        "grosslage-ostsee/sensor_rf-kiel-hafen.xlsx",
+        "grosslage-ostsee/sensor_rf-warnemuende.xlsx"
+      ],
+      "later": [
+        "grosslage-ostsee/nachtrag/mail_korrektur_kiel.eml",
+        "grosslage-ostsee/nachtrag/nachmeldung_marine_baltic_star.pdf"
+      ],
+      "truth": "grosslage-ostsee/truth.json"
     },
     {
       "id": "lieferkette",
@@ -26,7 +72,8 @@
       ],
       "later": [
         "lieferkette/nachtrag/04_streikmeldung_hafen.pdf"
-      ]
+      ],
+      "truth": null
     },
     {
       "id": "netzwerk",
@@ -36,7 +83,8 @@
         "netzwerk/01_kontakte.xlsx",
         "netzwerk/02_ermittlungsbericht.pdf"
       ],
-      "later": []
+      "later": [],
+      "truth": null
     }
   ]
 }

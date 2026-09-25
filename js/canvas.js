@@ -3,9 +3,9 @@
 import { app, find, latest, obsTableId, srcColor } from "./ctx.js";
 import { esc, fold, nextId, now } from "./util.js";
 
-const NW = 176, NH = 66, LANE_X = 170, LANE_PAD = 14;
+const NW = 176, NH = 66, LANE_X = 170, LANE_PAD = 14, MAX_ROWS = 250;
 let zoom = 1, connectFrom = null;
-const opts = { sug: true, events: true, ents: null };
+const opts = { sug: true, events: true, ents: null, filter: "" };
 const showEnts = (state) => opts.ents ?? state.workspace.profile === "netzwerk";
 
 function minutes(r) {
@@ -15,8 +15,18 @@ function minutes(r) {
   return d + h * 60 + m;
 }
 
-function autoLayout(state) {
-  const obs = state.rows.filter((r) => r.table_id === obsTableId(state));
+// Welche Zeilen als Kaestchen erscheinen: alle (klein), gefilterte oder die des gewaehlten Ereignisses (gross)
+function visibleRows(state) {
+  const all = state.rows.filter((r) => r.table_id === obsTableId(state));
+  const q = fold(opts.filter);
+  if (q) return { rows: all.filter((r) => fold(r.id + " " + Object.values(r.data).join(" ")).includes(q)).slice(0, MAX_ROWS), big: all.length > MAX_ROWS, total: all.length };
+  if (all.length <= MAX_ROWS) return { rows: all, big: false, total: all.length };
+  const ev = app.sel.event && find(state, app.sel.event);
+  return { rows: ev ? all.filter((r) => ev.members.includes(r.id)).slice(0, MAX_ROWS) : [], big: true, total: all.length };
+}
+
+function autoLayout(state, vis) {
+  const obs = vis.rows;
   const ts = obs.map(minutes).filter((x) => x != null).sort((a, b) => a - b);
   // robuste Skala: Ausreisser (anderer Tag) nicht die Achse dominieren lassen
   const lo = ts[Math.floor(ts.length * 0.1)] ?? 0, hi = ts[Math.ceil(ts.length * 0.9) - 1] ?? 1;
@@ -24,7 +34,17 @@ function autoLayout(state) {
   const x = (t) => LANE_X + 30 + Math.min(Math.max((t - lo) / span, 0), 1.08) * W;
   const pos = {}, lanes = [];
   let y = 40;
-  for (const s of state.sources) {
+  const a = latest(state, "lagebild");
+  if (vis.big && a) {
+    // Ereignis-Uebersicht als Raster oben, zeitlich sortiert; gestuetzte Ereignisse zuerst sichtbar
+    const evs = a.result.events.slice().sort((p, q) => p.start - q.start).filter((e) => e.sources.length >= 2 || opts.filter);
+    evs.slice(0, 120).forEach((e, i) => (pos[e.id] = { x: LANE_X + 30 + (i % 4) * 232, y: y + Math.floor(i / 4) * 84 }));
+    y += Math.ceil(Math.min(evs.length, 120) / 4) * 84 + 30;
+    pos[a.id] = { x: LANE_X + 30 + 4 * 232, y: 40 };
+  }
+  const axisTop = y - 30;
+  const srcIds = new Set(obs.map((r) => r.source_id));
+  for (const s of state.sources.filter((q) => !vis.big || srcIds.has(q.id))) {
     const rows = obs.filter((r) => r.source_id === s.id).sort((a, b) => (minutes(a) ?? 1e12) - (minutes(b) ?? 1e12));
     if (!rows.length) { lanes.push({ id: s.id, y, h: 60 }); y += 72; continue; }
     const slots = [];
@@ -42,10 +62,18 @@ function autoLayout(state) {
     lanes.push({ id: s.id, y, h });
     y += h + 8;
   }
-  const a = latest(state, "lagebild");
-  let ex = LANE_X + 30;
-  if (a) for (const e of a.result.events) { pos[e.id] = { x: Math.max(LANE_X + 30, x(e.start)), y: y + 40 }; ex = Math.max(ex, pos[e.id].x + 230); }
-  state.analyses.filter((x) => x.status !== "superseded").forEach((an, i) => (pos[an.id] = { x: LANE_X + 30 + i * 250, y: y + 170 }));
+  if (a && !vis.big) {
+    const lvl = [];
+    for (const e of a.result.events) {
+      const ex = Math.max(LANE_X + 30, x(e.start));
+      let l = 0;
+      while (lvl.some((q) => q.l === l && Math.abs(q.x - ex) < 220)) l++;
+      lvl.push({ x: ex, l });
+      pos[e.id] = { x: ex, y: y + 40 + l * 84 };
+    }
+    y += Math.max(0, ...lvl.map((q) => q.l)) * 84;
+  }
+  state.analyses.filter((x) => x.status !== "superseded").forEach((an, i) => (pos[an.id] ||= { x: LANE_X + 30 + i * 250, y: y + 170 }));
   let height = y + 320;
   if (state.workspace.profile === "netzwerk") {
     // Akteure im Kreis unterhalb der Bahnen, Analysen daneben
@@ -58,7 +86,7 @@ function autoLayout(state) {
   } else {
     state.entities.slice(0, 40).forEach((e, i) => (pos[e.id] = { x: LANE_X + 60 + W + 360 + (i % 2) * 165, y: 40 + Math.floor(i / 2) * 50 }));
   }
-  return { pos, lanes, axis: { lo, hi, x, W }, height };
+  return { pos, lanes, axis: { lo, hi, x, W, top: Math.max(0, axisTop) }, height };
 }
 
 function nodeHtml(state, id, p, sel) {
@@ -92,7 +120,8 @@ export function renderCanvas(root) {
     root.innerHTML = `<div class="empty"><h2>Noch keine Daten</h2><p>Importiere Text, PDF, Excel oder Scans – oder lade ein Beispielszenario mit synthetischen Dateien.</p><button class="primary" data-act="import">＋ Dateien importieren</button><button class="btn" data-act="demo">Beispieldaten laden</button></div>`;
     return;
   }
-  const L = autoLayout(state);
+  const shown = visibleRows(state);
+  const L = autoLayout(state, shown);
   const pos = { ...L.pos };
   for (const [id, p] of Object.entries(state.layout)) if (pos[id]) pos[id] = p;
   const ids = Object.keys(pos).filter((id) => {
@@ -102,8 +131,9 @@ export function renderCanvas(root) {
     if (p === "ANL") return opts.events;
     return true;
   });
-  const width = Math.max(...ids.map((id) => pos[id].x)) + 320;
+  const width = Math.max(900, ...ids.map((id) => pos[id].x)) + 320;
   const height = Math.max(L.height, ...ids.map((id) => pos[id].y + 120));
+  const hint = shown.big ? `<div class="bighint">${shown.total} Beobachtungen – zu viele für Einzelkästchen. ${opts.filter ? `Filter zeigt ${shown.rows.length}.` : app.sel.event ? `Zeige Belege von ${app.sel.event}.` : "Ereignis anklicken, um seine Belege aufzuklappen, oder oben filtern."}</div>` : "";
   const center = (id) => ({ x: pos[id].x + NW / 2, y: pos[id].y + NH / 2 });
   const vis = new Set(ids);
   let edges = "";
@@ -142,7 +172,7 @@ export function renderCanvas(root) {
     const step = hi - lo > 2880 ? 1440 : hi - lo > 600 ? 60 : hi - lo > 120 ? 15 : 5;
     for (let t = Math.ceil(lo / step) * step; t <= hi; t += step) {
       const d = new Date(t * 60000).toISOString();
-      axis += `<div class="axis" style="left:${x(t)}px">${step >= 1440 ? d.slice(8, 10) + "." + d.slice(5, 7) + "." : d.slice(11, 16)}</div>`;
+      axis += `<div class="axis" style="left:${x(t)}px;top:${L.axis.top}px;height:calc(100% - ${L.axis.top}px)">${step >= 1440 ? d.slice(8, 10) + "." + d.slice(5, 7) + "." : d.slice(11, 16)}</div>`;
     }
   }
   const lanes = L.lanes.map((ln) => {
@@ -158,11 +188,12 @@ export function renderCanvas(root) {
     <label class="small"><input type="checkbox" data-opt="sug" ${opts.sug ? "checked" : ""}> Vorschläge</label>
     <label class="small"><input type="checkbox" data-opt="events" ${opts.events ? "checked" : ""}> Ereignisse</label>
     <label class="small"><input type="checkbox" data-opt="ents" ${showEnts(state) ? "checked" : ""}> Entitäten</label>
+    <input class="filter" data-cfilter placeholder="Kästchen filtern …" value="${esc(opts.filter)}">
     <button class="btn sm" data-act="suggest" title="Verbindungen vorschlagen (Regeln bzw. KI)">✦ Verbindungen vorschlagen</button>
     <button class="btn sm" data-act="relayout">Auto-Layout</button>
     <button class="btn sm" data-act="zout">−</button><button class="btn sm" data-act="zin">+</button>
   </div>
-  <div class="canvas ${connectFrom ? "connecting" : ""}" style="width:${width * zoom}px;height:${height * zoom}px">
+  ${hint}<div class="canvas ${connectFrom ? "connecting" : ""}" style="width:${width * zoom}px;height:${height * zoom}px">
     <div class="graph" style="width:${width}px;height:${height}px;transform:scale(${zoom})">
       ${axis}${lanes}
       <svg width="${width}" height="${height}"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="var(--b)"/></marker></defs>${edges}</svg>
@@ -174,6 +205,8 @@ export function renderCanvas(root) {
 
 function wire(root, pos) {
   const state = app.state;
+  const cf = root.querySelector("[data-cfilter]");
+  cf?.addEventListener("input", () => { clearTimeout(cf._t); cf._t = setTimeout(() => { opts.filter = cf.value; renderCanvas(root); const g = root.querySelector("[data-cfilter]"); g.focus(); g.setSelectionRange(g.value.length, g.value.length); }, 250); });
   root.querySelectorAll("[data-opt]").forEach((cb) => cb.addEventListener("change", () => { opts[cb.dataset.opt] = cb.checked; renderCanvas(root); }));
   root.querySelector("[data-act=relayout]")?.addEventListener("click", () => { state.layout = {}; app.commit(); });
   root.querySelector("[data-act=zin]")?.addEventListener("click", () => { zoom = Math.min(1.6, zoom + 0.15); renderCanvas(root); });
@@ -224,6 +257,7 @@ function wire(root, pos) {
       }
       connectFrom = null;
       app.sel.node = id;
+      if (id.startsWith("CL-") && app.sel.event !== id && state.rows.length > MAX_ROWS) { app.sel.event = id; app.inspect(id); renderCanvas(root); return; }
       app.inspect(id);
       root.querySelectorAll(".node.sel").forEach((x) => x.classList.remove("sel"));
       n.classList.add("sel");

@@ -4,7 +4,8 @@
 const GAZ_OSTSEE = {
   "Fehmarn": [54.45, 11.19], "Fehmarnbelt": [54.58, 11.30], "Puttgarden": [54.50, 11.23], "Heiligenhafen": [54.37, 10.98],
   "Staberhuk": [54.40, 11.31], "Lolland": [54.75, 11.45], "Kiel": [54.32, 10.14], "Rostock": [54.09, 12.10],
-  "Warnemuende": [54.18, 12.08], "Ruegen": [54.42, 13.40], "Luebeck": [53.87, 10.69], "Ostsee": [54.60, 12.00],
+  "Warnemuende": [54.18, 12.08], "Ruegen": [54.42, 13.40], "Luebeck": [53.87, 10.69], "Travemuende": [53.96, 10.87],
+  "Sassnitz": [54.51, 13.64], "Ostsee": [54.60, 12.00],
 };
 const GAZ_HAEFEN = {
   "Ningbo": [29.87, 121.55], "Shanghai": [31.23, 121.47], "Gdansk": [54.35, 18.65], "Danzig": [54.35, 18.65],
@@ -15,9 +16,9 @@ const GAZ_HAEFEN = {
 export const PROFILES = {
   lagebild: {
     label: "Lagebild (z. B. Drohnen)",
-    objects: ["Drohne", "Drohnen", "Flugobjekt", "Flugobjekte", "Objekt", "Objekte", "Lichter", "Licht", "UAV", "Ballon", "Schiff", "Frachter", "Kutter", "Hubschrauber"],
+    objects: ["Drohne", "Drohnen", "Flugobjekt", "Flugobjekte", "Objekt", "Objekte", "Lichter", "Licht", "UAV", "Ballon", "Kleinziel", "Kleinziele", "Rotorgeraeusch", "Hubschrauber"],
     gazetteer: GAZ_OSTSEE,
-    cluster: { windowMin: 30, radiusKm: 30 },
+    cluster: { windowMin: 30, radiusKm: 30, maxSpanMin: 120 },
     questions: ["Erstelle ein Lagebild zum Drohnenüberflug über der Ostsee", "Welche Zeitangaben wurden korrigiert?", "Wie viele Objekte wurden gesehen?", "Was hat sich durch neue Dateien geändert?"],
   },
   lieferkette: {

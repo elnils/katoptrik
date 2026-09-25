@@ -62,19 +62,68 @@ Analysetypen: **Lagebild** (zeitlich-räumliche Ereignisbildung, Bestätigungsgr
   gemischten Zeitformaten). **Nachtrag:** Nachmeldung der Marine (PDF) → Lagebild wird veraltet, v2 zeigt die Änderungen.
 - `lieferkette/`: Bestellungen (XLSX), Verzugs-Mail (TXT), Qualitätsbericht (PDF); Nachtrag: Hafenstreik.
 - `netzwerk/`: Kontakte/Zahlungen (XLSX), Ermittlungsbericht (PDF).
+- `grosslage-ostsee/`: **33 Dateien in 9 Formaten** über vier Nächte – Anrufnotizen (TXT), Lagemeldungen
+  und Radar-Tabellen in UTC (PDF), gescanntes Fax (PDF ohne Textebene → OCR), Handnotizen (PNG → OCR),
+  Sensor-Logs (XLSX mit gemischten Zeitformaten und Hintergrundrauschen), AIS-Schiffsdaten (CSV, ISO/UTC),
+  Detektionssystem-Export (JSON), E-Mails (EML), Lagevermerk mit Tabelle (DOCX, absichtlich teils falsch),
+  Pressemitteilung (HTML). 8 echte Vorfälle, 4 Störquellen (Modellflug, Vogelschwarm, Fährbeleuchtung).
+  Dazu `truth.json` mit der wahren Zeit jeder Tabellen-/Textzeile. Nachtrag: Marine-Nachmeldung + Korrektur-Mail.
+
+Unterstützte Formate: PDF (Text + OCR-Fallback), TXT/MD, DOCX (Absätze + Tabellen als Tabellen),
+E-Mail `.eml` (Kopfzeilen werden zu Von/An/Zeit-Zeilen), XLSX/XLS/ODS/CSV, JSON, HTML, Bilder (OCR),
+ZIP-Archive und ganze Ordner.
+
+### Auswertung gegen Ground Truth
+
+`npm test` führt neben dem Smoke-Test `tests/eval.mjs` aus: Das große Szenario wird im Browser
+importiert und mit `truth.json` verglichen (Mindestwerte im Test hinterlegt). Aktueller Stand:
+
+| Messgröße | Ergebnis |
+|---|---|
+| Zeilen mit bekannter Wahrheit | 404 |
+| Zeitangabe exakt richtig normalisiert | 98,8 % |
+| innerhalb der Toleranz (z. B. „gegen 3 Uhr“) | 99,8 % |
+| Vorfälle als gestütztes Ereignis erkannt | 8 / 8 |
+| gestützte Ereignisse ohne echten Vorfall | 0 |
+
+## Wie weit trägt eine reine Browser-App?
+
+Lasttest (`tests/stress.mjs`, Headless-Chromium, synthetische Grosslage hochskaliert):
+
+| Umfang | Import | Lagebild | Workspace | JS-Heap |
+|---|---|---|---|---|
+| 33 Dateien, ~900 Zeilen | ~5 s (inkl. OCR) | < 50 ms | < 1 MB | – |
+| 33 Dateien, ~12.000 Zeilen | 6 s | 61 ms | 8,7 MB | 64 MB |
+| 33 Dateien, ~59.000 Zeilen | 15 s | 0,3 s | 41 MB | 140–210 MB |
+
+Faustregeln:
+- **Bis ca. 50.000 Tabellenzeilen und einige hundert Dateien** ist der Browser gut geeignet
+  (Tabellen/Zeitlinie seitenweise, Canvas zeigt ab 250 Zeilen Ereignisse statt Einzelkästchen).
+- **OCR** ist der Engpass: ca. 2–5 s pro Seite. Hunderte gescannte Seiten besser serverseitig.
+- **KI-Extraktion** kostet pro Dokument einen API-Aufruf; bei großen Mengen Batch-Verarbeitung über einen Server.
+- **Grenzen der statischen Seite:** Daten liegen nur im jeweiligen Browser (kein gemeinsamer Datenpool
+  im Team), API-Schlüssel im Browser, keine Rechteverwaltung. Für Teams: Backend mit Datenbank
+  (z. B. Postgres), Worker für OCR/KI und Login – die Datenstruktur (IDs, Revisionen, Rechenschritte)
+  bleibt dieselbe.
+
+Lasttest selbst ausführen:
+```bash
+python3 tools/generate_grosslage.py --scale 100 --out .stress
+npm start & STRESS_DIR=.stress node tests/stress.mjs
+```
 
 Eigene Dateien einfach über „＋ Daten“ hineinziehen (PDF, auch gescannt; TXT; XLSX/CSV; Bilder).
 Alles wird nur im Browser verarbeitet (IndexedDB); über „Export (JSON)“ lässt sich ein Workspace sichern
 und z. B. im Repository ablegen.
 
-Testdaten neu erzeugen: `pip install reportlab openpyxl pillow && npm run samples`
+Testdaten neu erzeugen: `pip install reportlab openpyxl pillow python-docx && npm run samples`
 
 ## Lokal starten und testen
 
 ```bash
 npm install
 npm start          # http://localhost:8765
-npm test           # End-to-End-Test mit Playwright (Drohnen-Szenario inkl. Nachtrag)
+npm test           # Smoke-Test + Auswertung gegen Ground Truth (Playwright)
 ```
 
 Der Workflow `.github/workflows/test.yml` führt den Test bei jedem Push aus;
@@ -93,7 +142,8 @@ js/analysis.js    Rechenschritte, Analysen, Versionierung, Veraltet-Erkennung, V
 js/ai.js          optionale Claude-Anbindung (offizielles SDK, JSON-Schema-Ausgaben)
 js/canvas.js, js/views.js, js/chat.js
 vendor/           lokal gebündelte Bibliotheken (keine externen CDNs nötig)
-samples/          synthetische Testdateien, tools/generate_samples.py erzeugt sie
+samples/          synthetische Testdateien (tools/generate_samples.py, tools/generate_grosslage.py)
+tests/            smoke.mjs, eval.mjs (Ground Truth), stress.mjs (Lasttest)
 ```
 
 Bibliotheken in `vendor/` stehen unter ihren eigenen Lizenzen (pdf.js: Apache-2.0,

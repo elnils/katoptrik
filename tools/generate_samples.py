@@ -183,6 +183,8 @@ def netzwerk(base):
 
 
 if __name__ == "__main__":
+    import subprocess, sys
+    subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), "generate_grosslage.py")], check=True)
     drohnen(os.path.join(ROOT, "drohnen-ostsee"))
     drohnen_nachtrag(os.path.join(ROOT, "drohnen-ostsee", "nachtrag"))
     lieferkette(os.path.join(ROOT, "lieferkette"))
@@ -191,17 +193,21 @@ if __name__ == "__main__":
     manifest = {"scenarios": []}
     for sid, title, profile in [
         ("drohnen-ostsee", "Drohnenueberflug Ostsee", "lagebild"),
+        ("grosslage-ostsee", "Grosslage Ostsee: 4 Naechte, 33 Quellen, 9 Formate", "lagebild"),
         ("lieferkette", "Lieferketten-Monitoring", "lieferkette"),
         ("netzwerk", "Netzwerkanalyse", "netzwerk"),
     ]:
         base = os.path.join(ROOT, sid)
-        files = sorted(f for f in os.listdir(base) if os.path.isfile(os.path.join(base, f)))
+        if not os.path.isdir(base):
+            continue
+        files = sorted(f for f in os.listdir(base) if os.path.isfile(os.path.join(base, f)) and f != "truth.json")
         later = os.path.join(base, "nachtrag")
         late = sorted(os.listdir(later)) if os.path.isdir(later) else []
         manifest["scenarios"].append({
             "id": sid, "title": title, "profile": profile,
             "files": [f"{sid}/{f}" for f in files],
             "later": [f"{sid}/nachtrag/{f}" for f in late],
+            "truth": f"{sid}/truth.json" if os.path.exists(os.path.join(base, "truth.json")) else None,
         })
     with open(os.path.join(ROOT, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)

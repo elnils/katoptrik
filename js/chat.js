@@ -71,11 +71,20 @@ function localAnswer(q) {
 async function aiAnswer(q) {
   const s = app.state, oid = obsTableId(s);
   const cols = ["id", "quelle", "datum", "zeit", "ort", "lat", "lon", "anzahl", "objekt", "akteure", "referenzen", "betrag", "einheit", "von", "an", "text"];
-  const rows = s.rows.filter((r) => r.table_id === oid).slice(0, 600);
+  // Grosse Pools: nur die relevantesten Zeilen mitschicken (Begriffs-Treffer, gestuetzte Ereignisse, Aktualitaet)
+  const all = s.rows.filter((r) => r.table_id === oid);
+  let rows = all;
+  if (all.length > 500) {
+    const terms = fold(q).split(/[^a-z0-9-]+/).filter((w) => w.length > 3);
+    const la = latest(s, "lagebild");
+    const strong = new Set(la ? la.result.events.filter((e) => e.sources.length >= 2).flatMap((e) => e.members) : []);
+    rows = all.map((r) => { const t = fold(Object.values(r.data).join(" ")); return { r, sc: terms.filter((w) => t.includes(w)).length * 3 + (strong.has(r.id) ? 2 : 0) + (r.method !== "tabelle" ? 1 : 0) }; })
+      .sort((a, b) => b.sc - a.sc).slice(0, 500).map((x) => x.r);
+  }
   const tsv = [cols.join("\t"), ...rows.map((r) => [r.id, r.source_id, ...cols.slice(2).map((c) => String(r.data[c] ?? "").replace(/\s+/g, " ").slice(0, 220))].join("\t"))].join("\n");
   const anl = s.analyses.filter((a) => a.status !== "superseded").map((a) => `${a.id} ${a.title} v${a.version} (${a.status}): ${a.result.summary.join(" ")}`).join("\n");
   const hist = s.chat.slice(-6).map((m) => `${m.role}: ${m.text.slice(0, 400)}`).join("\n");
-  const { data, model } = await aiChat(q, tsv, anl, hist);
+  const { data, model } = await aiChat(q, (rows.length < all.length ? `# Auszug: ${rows.length} von ${all.length} Zeilen (nach Relevanz)\n` : "") + tsv, anl, hist);
   const valid = data.belege.filter((id) => find(s, id));
   let html = linkIds(esc(data.antwort).replace(/\n/g, "<br>"));
   let trace = `KI (${model}) · Belege: ${valid.join(", ") || "—"}`;

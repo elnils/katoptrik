@@ -69,6 +69,7 @@ h2{font-size:17px;margin:0 0 8px}h3{font-size:14px;margin:18px 0 8px}
 .port{position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:var(--w);border:1.5px solid var(--b);color:var(--b);font-size:11px;line-height:12px;text-align:center;cursor:crosshair;display:none}
 .node:hover .port,.connecting .port{display:block}
 .connecting .node{cursor:crosshair}
+.bighint{background:var(--s);color:var(--b);font-size:12px;padding:6px 12px;border-bottom:1px solid var(--l)}
 .legend{display:flex;gap:10px;align-items:center;font-size:11px;color:var(--m);flex-wrap:wrap}
 .legend i{display:inline-block;width:22px;height:0;border-top:2px solid #98a1ab;vertical-align:middle;margin-right:4px}
 .legend i.sug{border-top:2px dashed var(--p)}.legend i.man{border-top-color:var(--b)}
@@ -84,6 +85,7 @@ td.edit{cursor:text}
 td.edit:hover{outline:1px dashed var(--b)}
 tr:hover td{background:var(--l2)}
 tr:hover td.fixed{background:var(--warns)}
+.filter{border:1px solid var(--l);background:var(--w);border-radius:7px;padding:4px 8px;font-size:12px;width:170px}
 .tabs{display:flex;gap:4px;flex-wrap:wrap}
 .tab{border:1px solid var(--l);background:var(--w);border-radius:99px;padding:4px 10px;font-size:12px;cursor:pointer}
 .tab.active{background:var(--b);color:#fff;border-color:var(--b)}
@@ -149,6 +151,7 @@ textarea{width:100%;height:64px;resize:none;border:1px solid var(--l);background
 .field{display:block;margin:10px 0}
 .field span{display:block;font-size:12px;color:var(--m);margin-bottom:3px}
 .field input,.field select{width:100%;border:1px solid var(--l);background:var(--w);border-radius:7px;padding:7px 9px}
+.pbar{height:4px;background:var(--l2);border-radius:4px;margin:10px 0 6px;overflow:hidden}.pbar div{height:100%;width:0;background:var(--b);transition:width .2s}
 .progress{font-size:12px;color:var(--m);max-height:180px;overflow:auto}
 .scen{border:1px solid var(--l);border-radius:9px;padding:10px 12px;margin:8px 0}
 .scen .files{font-size:11.5px;color:var(--m);margin:4px 0 8px}

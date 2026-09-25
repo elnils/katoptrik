@@ -1,1 +1,3 @@
 node_modules/
+.stress/
+__pycache__/

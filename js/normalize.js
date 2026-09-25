@@ -14,6 +14,9 @@ export const RULES = {
   T6: "UTC in Lokalzeit umgerechnet",
   T7: "Excel-Zeitwert umgerechnet",
   T8: "Meldezeit ≠ Ereigniszeit (Nachtrag)",
+  T9: "12-Stunden-Angabe im Nachtkontext als Abend gedeutet",
+  D4: "Nachtkontext: Zeit nach Mitternacht → Folgetag",
+  D5: "Ereignisdatum aus Bezugszeile statt Meldedatum",
   D1: "Datum TT.MM.JJJJ",
   D2: "Datum aus Dokumentkontext ergänzt",
   D3: "Zweistelliges Jahr ergänzt",
@@ -43,11 +46,12 @@ export function findTimes(text) {
     const dec = parseFloat(`${r[1]}.${r[2]}`), h = Math.floor(dec), m = Math.round((dec - h) * 60);
     push(r.index, r[0], h, m, "T3", 0.6, `"${r[0]}" ist als Dauer formuliert; als Uhrzeit ${hhmm(h, m)} gedeutet`);
   }
-  const reHM = /(?<![\d.,:])([01]?\d|2[0-3])([:.])([0-5]\d)(?::[0-5]\d)?(?![\d])(\s*uhr)?/g;
+  const reHM = /(?<![\d.,:T-])([01]?\d|2[0-3])([:.])([0-5]\d)(?::[0-5]\d)?(?![\d])(\s*uhr)?/g;
   const pair = findDecimalPair(t);
   while ((r = reHM.exec(t))) {
     const rest = t.slice(r.index + r[0].length);
     if (r[2] === ".") {
+      if (rest.startsWith(".")) continue; // "23.09." ist ein Datum
       if (/^\.\d/.test(rest) || /^\.?\s?\d{2,4}\b/.test(rest.slice(0, 1) === "." ? rest : "")) continue; // Datum 12.09.2026
       if (!r[4]) {
         if (/^\s*°|^\s*[nsoew]\b/.test(rest)) continue; // Koordinate 11.28 E
@@ -97,6 +101,24 @@ export function pickEventTime(text, times) {
 export function applyUtc(time, offset) {
   const [h, m] = time.split(":").map(Number);
   return hhmm((h + offset + 24) % 24, m);
+}
+
+// UTC-Datum+Zeit in Lokalzeit, inkl. Datumswechsel ueber Mitternacht
+export function utcToLocal(date, time, offset) {
+  const d = new Date(`${date}T${time}:00Z`);
+  if (isNaN(d)) return { date, time: applyUtc(time, offset) };
+  const l = new Date(d.getTime() + offset * 3600000).toISOString();
+  return { date: l.slice(0, 10), time: l.slice(11, 16), dayShift: l.slice(0, 10) !== date };
+}
+
+// ISO-Zeitstempel "2026-09-24T00:31:00Z" / "+02:00"
+export function parseIso(s, offset) {
+  const m = /^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})(?::\d{2}(?:\.\d+)?)?\s*(Z|[+-]\d{2}:?\d{2})?$/.exec(String(s).trim());
+  if (!m) return null;
+  if (!m[3]) return { date: m[1], time: m[2], rule: "D1" };
+  const tzm = m[3] === "Z" ? 0 : (m[3][0] === "-" ? -1 : 1) * (+m[3].slice(1, 3) * 60 + +m[3].slice(-2));
+  const loc = new Date(Date.parse(`${m[1]}T${m[2]}:00Z`) - tzm * 60000 + offset * 3600000).toISOString();
+  return { date: loc.slice(0, 10), time: loc.slice(11, 16), rule: tzm === offset * 60 ? "D1" : "T6", note: `${m[3] === "Z" ? "UTC" : "UTC" + m[3]} → UTC+${offset}` };
 }
 
 // Datum: 24.09.2026, 24.9., 24.09.26, 2026-09-24
@@ -155,9 +177,10 @@ export function findPlaces(text, gazetteer) {
 export function findCountObject(text, objects) {
   const t = fold(text);
   const vocab = objects.map((o) => ({ o, f: fold(o) }));
-  const re = /\b(\d{1,4}|ein|eine|einem|einen|zwei|drei|vier|fuenf|sechs|sieben|acht|neun|zehn|zwoelf)\s+([a-z-]{3,})(?:\s+([a-z-]{3,}))?/g;
+  const re = /(?<![\d:.,])\b(\d{1,4}|ein|eine|einem|einen|zwei|drei|vier|fuenf|sechs|sieben|acht|neun|zehn|zwoelf)\s+([a-z-]{3,})(?:\s+([a-z-]{3,}))?/g;
   let r;
   while ((r = re.exec(t))) {
+    if (/^(uhr|min|minuten|std|stunden|tage?|wochen?|km|kn|m)$/.test(r[2])) { re.lastIndex = r.index + r[1].length + 1; continue; }
     for (const word of [r[2], r[3]].filter(Boolean)) {
       let hit = vocab.find((v) => v.f === word), fixed = null;
       if (!hit) {

@@ -3,7 +3,7 @@ import { app, find, obsTableId } from "./ctx.js";
 import { emptyState, exportJson, load, save } from "./store.js";
 import { esc, nextId, now, sha256 } from "./util.js";
 import { PROFILES, profileOf } from "./profiles.js";
-import { parseFile, fileKind } from "./parsers.js";
+import { parseFile, fileKind, unzip } from "./parsers.js";
 import { addAiRows, ingest, rebuildEntities } from "./extract.js";
 import { RUNNERS, checkStale, suggestLinks } from "./analysis.js";
 import { aiEnabled, aiExtract, aiLinks, getSettings, setSettings, DEFAULT_MODEL } from "./ai.js";
@@ -83,12 +83,26 @@ async function importFiles(files, meta = {}) {
   const s = app.state;
   const log = (m) => { const p = $("progress"); if (p) { p.insertAdjacentHTML("beforeend", `<div>${m}</div>`); p.scrollTop = p.scrollHeight; } };
   let newRows = 0, newSrc = 0;
+  const t0 = performance.now();
+  // ZIP-Archive entpacken, Ground-Truth-Dateien auslassen
+  const expanded = [];
+  for (const f of files) {
+    if (fileKind(f.name) === "ZIP") {
+      try { const inner = await unzip(f); log(`⇲ ${esc(f.name)}: ${inner.length} Dateien entpackt`); expanded.push(...inner); }
+      catch (e) { log(`✕ ${esc(f.name)}: ${esc(e.message || e)}`); }
+    } else if (!/^truth\.json$/i.test(f.name)) expanded.push(f);
+  }
+  files = expanded;
+  let i = 0;
   for (const file of files) {
+    i++;
+    const bar = $("importBar");
+    if (bar) bar.style.width = `${Math.round((i / files.length) * 100)}%`;
     const buf = await file.arrayBuffer();
     const hash = await sha256(buf);
     const dup = s.sources.find((x) => x.sha256 === hash);
     if (dup) { log(`↺ ${esc(file.name)}: identisch mit ${dup.id} – übersprungen`); continue; }
-    log(`… ${esc(file.name)} wird gelesen`);
+    log(`… [${i}/${files.length}] ${esc(file.name)} wird gelesen`);
     let parsed;
     try {
       parsed = await parseFile(file, (m) => log(`&nbsp;&nbsp;${esc(m)}`));
@@ -132,9 +146,12 @@ async function importFiles(files, meta = {}) {
   rebuildEntities(s);
   const sug = suggestLinks(s);
   const stale = checkStale(s);
+  const secs = ((performance.now() - t0) / 1000).toFixed(1);
+  s.audit.push({ id: nextId(s, "EVT"), ts: now(), action: "IMPORT-LAUF", detail: `${newSrc} Quellen, ${newRows} Zeilen in ${secs} s; ${sug.length} Verbindungsvorschläge`, refs: [] });
+  log(`<b>${newSrc} Quellen, ${newRows} Zeilen in ${secs} s</b>`);
   app.commit();
-  app.toast(`${newSrc} Quelle(n), ${newRows} neue Zeilen, ${sug.length} Verbindungsvorschläge${stale.length ? ` · ⚠ ${stale.length} Analyse(n) veraltet` : ""}`, 5000);
-  return { newRows, stale };
+  app.toast(`${newSrc} Quelle(n), ${newRows} neue Zeilen in ${secs} s, ${sug.length} Verbindungsvorschläge${stale.length ? ` · ⚠ ${stale.length} Analyse(n) veraltet` : ""}`, 5000);
+  return { newRows, stale, secs };
 }
 
 function openModal(html) { $("modalCard").innerHTML = html; $("modal").classList.add("show"); }
@@ -142,13 +159,18 @@ function closeModal() { $("modal").classList.remove("show"); }
 
 function openImport() {
   openModal(`<h2>Daten importieren</h2><p class="muted small">Text (.txt), PDF (auch gescannt → OCR), Excel/CSV, Bilder (OCR). Jede Datei wird unverändert per SHA-256 registriert; daraus entstehen Tabellen mit eindeutigen IDs. Bestehende Zeilen werden nie überschrieben.</p>
-  <input id="files" type="file" multiple accept=".pdf,.txt,.md,.csv,.xlsx,.xls,.ods,.png,.jpg,.jpeg,.webp,.tif,.tiff" hidden>
-  <div class="drop" id="drop">Dateien hierher ziehen oder <b>auswählen</b><br><small>mehrere Dateien möglich · ${aiEnabled() ? "KI-Extraktion aktiv" : "Regel-Extraktion (ohne KI)"}</small></div>
+  <input id="files" type="file" multiple accept=".pdf,.txt,.md,.csv,.xlsx,.xls,.ods,.docx,.eml,.json,.html,.htm,.zip,.png,.jpg,.jpeg,.webp,.tif,.tiff" hidden>
+  <input id="folder" type="file" webkitdirectory multiple hidden>
+  <div class="drop" id="drop">Dateien oder ZIP hierher ziehen oder <b>auswählen</b><br><small>PDF · TXT · DOCX · E-Mail (.eml) · XLSX/CSV · JSON · HTML · Bilder · ZIP · ${aiEnabled() ? "KI-Extraktion aktiv" : "Regel-Extraktion (ohne KI)"}</small></div>
+  <button class="btn sm" id="pickFolder">Ganzen Ordner wählen</button>
+  <div class="pbar"><div id="importBar"></div></div>
   <div class="progress" id="progress"></div>
   <div class="foot"><button class="btn" data-close-modal>Schließen</button></div>`);
   const drop = $("drop"), inp = $("files");
   drop.onclick = () => inp.click();
   inp.onchange = () => importFiles([...inp.files]);
+  $("pickFolder").onclick = () => $("folder").click();
+  $("folder").onchange = () => importFiles([...$("folder").files].filter((f) => !f.name.startsWith(".")));
   drop.ondragover = (e) => { e.preventDefault(); drop.classList.add("over"); };
   drop.ondragleave = () => drop.classList.remove("over");
   drop.ondrop = (e) => { e.preventDefault(); drop.classList.remove("over"); importFiles([...e.dataTransfer.files]); };
@@ -172,8 +194,9 @@ async function openDemo() {
   try { man = await (await fetch("samples/manifest.json")).json(); }
   catch { app.toast("samples/manifest.json nicht gefunden"); return; }
   openModal(`<h2>Beispieldaten (synthetisch)</h2><p class="muted small">Erfundene Testdateien aus <span class="mono">samples/</span> im Repository. „Nachtrag“ spielt eine später eingehende Datei ein – so siehst du, wie neue Informationen bestehende Analysen verändern.</p>
-  ${man.scenarios.map((sc) => `<div class="scen"><b>${esc(sc.title)}</b> <span class="pill">${esc(PROFILES[sc.profile]?.label || sc.profile)}</span><div class="files">${sc.files.map((f) => `<a href="samples/${esc(f)}" target="_blank">${esc(f.split("/").pop())}</a>`).join(" · ")}${sc.later.length ? `<br>Nachtrag: ${sc.later.map((f) => `<a href="samples/${esc(f)}" target="_blank">${esc(f.split("/").pop())}</a>`).join(" · ")}` : ""}</div>
+  ${man.scenarios.map((sc) => `<div class="scen"><b>${esc(sc.title)}</b> <span class="pill">${esc(PROFILES[sc.profile]?.label || sc.profile)}</span><div class="files">${sc.files.length > 8 ? `<b>${sc.files.length} Dateien</b> (${[...new Set(sc.files.map((f) => f.split(".").pop().toUpperCase()))].join(", ")}): ` : ""}${sc.files.slice(0, 8).map((f) => `<a href="samples/${esc(f)}" target="_blank">${esc(f.split("/").pop())}</a>`).join(" · ")}${sc.files.length > 8 ? " · …" : ""}${sc.later.length ? `<br>Nachtrag: ${sc.later.map((f) => `<a href="samples/${esc(f)}" target="_blank">${esc(f.split("/").pop())}</a>`).join(" · ")}` : ""}</div>
   <button class="primary sm" data-scen="${sc.id}">In neuem Workspace laden</button> ${sc.later.length ? `<button class="btn sm" data-later="${sc.id}">Nachtrag einspielen</button>` : ""}</div>`).join("")}
+  <div class="pbar"><div id="importBar"></div></div>
   <div class="progress" id="progress"></div>
   <div class="foot"><button class="btn" data-close-modal>Schließen</button></div>`);
   document.querySelectorAll("[data-scen]").forEach((b) => b.addEventListener("click", async () => {
@@ -263,7 +286,7 @@ document.addEventListener("click", (e) => {
   if (chip) ask(chip.textContent);
 });
 
-document.querySelectorAll(".nav[data-view]").forEach((n) => n.addEventListener("click", () => { app.view = n.dataset.view; $("inspector").classList.remove("show"); render(); }));
+document.querySelectorAll(".nav[data-view]").forEach((n) => n.addEventListener("click", () => { app.view = n.dataset.view; app.sel.tfilter = ""; app.sel.page = 0; $("inspector").classList.remove("show"); render(); }));
 $("btnImport").onclick = openImport;
 $("btnDemo").onclick = openDemo;
 $("btnSettings").onclick = openSettings;

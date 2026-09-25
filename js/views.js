@@ -1,11 +1,31 @@
 // Tabellen, Analysen, Zeitlinie, Quellen, Korrekturen, Audit und die Detailansicht (Inspector).
 import { app, find, obsTableId, srcColor, srcName } from "./ctx.js";
-import { esc, linkIds, nextId, now } from "./util.js";
+import { esc, fold, linkIds, nextId, now } from "./util.js";
 import { OBS_COLUMNS } from "./extract.js";
 import { RULES } from "./normalize.js";
 
 const idref = (id) => `<a href="#" class="idref" data-id="${id}">${id}</a>`;
 const fmt = (v) => (v == null ? "" : typeof v === "number" ? v.toLocaleString("de-DE") : String(v));
+const PAGE = 200;
+const clip = (t, n = 12000) => (t.length > n ? t.slice(0, n) + `\n… (${t.length - n} Zeichen gekürzt – vollständig im JSON-Export)` : t);
+// Filter + Seitenweise Anzeige, damit auch zehntausende Zeilen fluessig bleiben
+function page(items, textOf) {
+  const q = fold(app.sel.tfilter || "");
+  const hit = q ? items.filter((x) => fold(textOf(x)).includes(q)) : items;
+  const pages = Math.max(1, Math.ceil(hit.length / PAGE));
+  const p = Math.min(app.sel.page || 0, pages - 1);
+  return { list: hit.slice(p * PAGE, (p + 1) * PAGE), total: hit.length, all: items.length, p, pages };
+}
+function pager(pg) {
+  return `<input class="filter" data-filter placeholder="Filtern …" value="${esc(app.sel.tfilter || "")}"><span class="small muted">${pg.total === pg.all ? pg.all : `${pg.total} von ${pg.all}`} Einträge</span>${pg.pages > 1 ? `<button class="btn sm" data-pg="${pg.p - 1}" ${pg.p ? "" : "disabled"}>‹</button><span class="small">Seite ${pg.p + 1}/${pg.pages}</span><button class="btn sm" data-pg="${pg.p + 1}" ${pg.p + 1 < pg.pages ? "" : "disabled"}>›</button>` : ""}`;
+}
+function wirePager(root, rerender) {
+  const f = root.querySelector("[data-filter]");
+  if (f) {
+    f.addEventListener("input", () => { app.sel.tfilter = f.value; app.sel.page = 0; clearTimeout(f._t); f._t = setTimeout(() => { rerender(root); const g = root.querySelector("[data-filter]"); g.focus(); g.setSelectionRange(g.value.length, g.value.length); }, 200); });
+  }
+  root.querySelectorAll("[data-pg]").forEach((b) => b.addEventListener("click", () => { app.sel.page = +b.dataset.pg; rerender(root); const tw = root.querySelector(".tw"); if (tw) tw.scrollTop = 0; else root.scrollTop = 0; }));
+}
 const ts = (iso) => new Date(iso).toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" });
 
 // ---------- Tabellen ----------
@@ -19,24 +39,31 @@ export function renderTables(root) {
     { id: "calcs", label: "Rechenschritte", n: s.calcs.length },
   ];
   const cur = app.sel.table && tabs.some((t) => t.id === app.sel.table) ? app.sel.table : tabs[0]?.id;
-  let head = [], body = "";
+  let head = [], body = "", pg = { total: 0, all: 0, p: 0, pages: 1 };
   if (cur === "segments") {
     head = ["SEG-ID", "Quelle", "Fundstelle", "Text", "→ Zeilen"];
-    body = s.segments.map((g) => `<tr><td>${idref(g.id)}</td><td>${idref(g.source_id)}</td><td>${g.loc}</td><td class="wrap">${esc(g.text)}</td><td>${s.rows.filter((r) => r.seg_id === g.id).map((r) => idref(r.id)).join(" ")}</td></tr>`).join("");
+    pg = page(s.segments, (g) => g.id + " " + g.text);
+    const bySeg = new Map();
+    s.rows.forEach((r) => r.seg_id && (bySeg.get(r.seg_id) || bySeg.set(r.seg_id, []).get(r.seg_id)).push(r.id));
+    body = pg.list.map((g) => `<tr><td>${idref(g.id)}</td><td>${idref(g.source_id)}</td><td>${g.loc}</td><td class="wrap">${esc(g.text)}</td><td>${(bySeg.get(g.id) || []).map(idref).join(" ")}</td></tr>`).join("");
   } else if (cur === "entities") {
     head = ["ENT-ID", "Typ", "Name", "Koordinaten", "Erwähnungen"];
-    body = s.entities.map((e) => `<tr><td>${idref(e.id)}</td><td>${e.type}</td><td>${esc(e.name)}</td><td>${e.lat != null ? `${e.lat}, ${e.lon}` : ""}</td><td class="wrap">${e.mentions.map(idref).join(" ")}</td></tr>`).join("");
+    pg = page(s.entities, (e) => e.id + " " + e.type + " " + e.name);
+    body = pg.list.map((e) => `<tr><td>${idref(e.id)}</td><td>${e.type}</td><td>${esc(e.name)}</td><td>${e.lat != null ? `${e.lat}, ${e.lon}` : ""}</td><td class="wrap">${e.mentions.map(idref).join(" ")}</td></tr>`).join("");
   } else if (cur === "links") {
     head = ["LNK-ID", "Von", "Nach", "Bezeichnung", "Art", "Status", "Begründung", "Score"];
-    body = s.links.map((l) => `<tr><td>${idref(l.id)}</td><td>${idref(l.from)}</td><td>${idref(l.to)}</td><td>${esc(l.label)}</td><td>${l.kind}</td><td>${l.status}</td><td class="wrap">${esc(l.reason || "")}</td><td>${l.score ?? ""}</td></tr>`).join("");
+    pg = page(s.links, (l) => [l.id, l.from, l.to, l.label, l.kind, l.status, l.reason].join(" "));
+    body = pg.list.map((l) => `<tr><td>${idref(l.id)}</td><td>${idref(l.from)}</td><td>${idref(l.to)}</td><td>${esc(l.label)}</td><td>${l.kind}</td><td>${l.status}</td><td class="wrap">${esc(l.reason || "")}</td><td>${l.score ?? ""}</td></tr>`).join("");
   } else if (cur === "calcs") {
     head = ["CALC-ID", "Analyse", "Schritt", "Operation", "Titel", "Inputs"];
-    body = s.calcs.map((c) => `<tr><td>${idref(c.id)}</td><td>${idref(c.analysis_id)}</td><td>${c.step}</td><td class="mono">${c.op}</td><td>${esc(c.title)}</td><td>${c.inputs.length}</td></tr>`).join("");
+    pg = page(s.calcs, (c) => [c.id, c.analysis_id, c.op, c.title].join(" "));
+    body = pg.list.map((c) => `<tr><td>${idref(c.id)}</td><td>${idref(c.analysis_id)}</td><td>${c.step}</td><td class="mono">${c.op}</td><td>${esc(c.title)}</td><td>${c.inputs.length}</td></tr>`).join("");
   } else if (cur) {
     const t = s.tables.find((x) => x.id === cur);
     const cols = t.kind === "observations" ? OBS_COLUMNS : t.columns;
     head = ["ROW-ID", "Quelle", "Fundstelle", ...cols, "Konf.", "Methode", "Rev"];
-    body = s.rows.filter((r) => r.table_id === cur).map((r) => {
+    pg = page(s.rows.filter((r) => r.table_id === cur), (r) => r.id + " " + r.source_id + " " + Object.values(r.data).join(" "));
+    body = pg.list.map((r) => {
       const fixed = new Set(r.corrections.map((c) => (c.field === "lat/lon" ? ["lat", "lon"] : [c.field])).flat());
       const origin = r.seg_id ? idref(r.seg_id) : r.loc;
       return `<tr><td>${idref(r.id)}</td><td>${idref(r.source_id)}</td><td>${r.seg_id ? origin + " " : ""}${esc(r.loc)}</td>${cols.map((c) => {
@@ -46,9 +73,10 @@ export function renderTables(root) {
       }).join("")}<td>${r.confidence}</td><td>${r.method}</td><td>${r.rev}</td></tr>`;
     }).join("");
   }
-  root.innerHTML = `<div class="bar"><b>Tabellen</b><div class="tabs">${tabs.map((t) => `<span class="tab ${t.id === cur ? "active" : ""}" data-tab="${t.id}">${esc(t.label)} · ${t.n}</span>`).join("")}</div><div class="sp"></div><span class="small muted" title="Gelb = normalisierter/korrigierter Wert (Tooltip zeigt Regel und Rohwert). Doppelklick auf eine Zelle erzeugt eine manuelle Korrektur als neue Revision – betroffene Analysen werden als veraltet markiert.">ⓘ gelb = korrigiert · Doppelklick = korrigieren</span><button class="btn sm" data-act="csv">CSV</button></div>
+  root.innerHTML = `<div class="bar"><b>Tabellen</b><div class="tabs">${tabs.map((t) => `<span class="tab ${t.id === cur ? "active" : ""}" data-tab="${t.id}">${esc(t.label)} · ${t.n}</span>`).join("")}</div><div class="sp"></div>${pager(pg)}<span class="small muted" title="Gelb = normalisierter/korrigierter Wert (Tooltip zeigt Regel und Rohwert). Doppelklick auf eine Zelle erzeugt eine manuelle Korrektur als neue Revision – betroffene Analysen werden als veraltet markiert.">ⓘ gelb = korrigiert · Doppelklick = korrigieren</span><button class="btn sm" data-act="csv">CSV</button></div>
   ${cur ? `<div class="tw"><table><thead><tr>${head.map((h) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${body || `<tr><td colspan="${head.length}" class="muted">Keine Einträge.</td></tr>`}</tbody></table></div>` : `<div class="empty">Noch keine Tabellen.</div>`}`;
-  root.querySelectorAll("[data-tab]").forEach((t) => t.addEventListener("click", () => { app.sel.table = t.dataset.tab; renderTables(root); }));
+  root.querySelectorAll("[data-tab]").forEach((t) => t.addEventListener("click", () => { app.sel.table = t.dataset.tab; app.sel.page = 0; renderTables(root); }));
+  wirePager(root, renderTables);
   root.querySelector("[data-act=csv]")?.addEventListener("click", () => {
     const rows = [...root.querySelectorAll("table tr")].map((tr) => [...tr.children].map((td) => `"${td.textContent.replace(/"/g, '""')}"`).join(";"));
     const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(new Blob(["﻿" + rows.join("\n")], { type: "text/csv" })), download: `${cur}.csv` });
@@ -95,7 +123,7 @@ export function renderAnalyses(root) {
     <div class="panel"><b>Ergebnis</b><ul class="summary">${cur.result.summary.map((l) => `<li>${linkIds(esc(l))}</li>`).join("")}</ul></div>
     ${resultTable(cur)}
     <h3>Rechenweg (${steps.length} Schritte)</h3>
-    ${steps.map((c) => `<details class="step"><summary><span class="idref">${c.id}</span><b>${c.step}. ${esc(c.title)}</b><span class="pill mono">${c.op}</span><span class="muted small">${c.inputs.length} Inputs</span></summary><pre>${linkIds(esc(`Formel: ${c.formula}\nParameter: ${JSON.stringify(c.params, null, 1)}\nInputs: ${c.inputs.join(", ")}\nOutput: ${JSON.stringify(c.output, null, 1)}`))}</pre></details>`).join("")}
+    ${steps.map((c) => `<details class="step"><summary><span class="idref">${c.id}</span><b>${c.step}. ${esc(c.title)}</b><span class="pill mono">${c.op}</span><span class="muted small">${c.inputs.length} Inputs</span></summary><pre>${linkIds(esc(clip(`Formel: ${c.formula}\nParameter: ${JSON.stringify(c.params, null, 1)}\nInputs (${c.inputs.length}): ${c.inputs.slice(0, 200).join(", ")}${c.inputs.length > 200 ? " …" : ""}\nOutput: ${JSON.stringify(c.output, null, 1)}`)))}</pre></details>`).join("")}
     <div class="foot" style="justify-content:flex-start"><button class="btn sm" data-md="${cur.id}">Als Markdown exportieren</button><button class="btn sm" data-rerun="${cur.id}">Neu berechnen</button></div>
   </div></div>`;
   root.querySelectorAll("[data-anl]").forEach((x) => x.addEventListener("click", () => { app.sel.analysis = x.dataset.anl; renderAnalyses(root); }));
@@ -107,9 +135,9 @@ export function renderAnalyses(root) {
 function resultTable(a) {
   const s = app.state;
   if (a.type === "lagebild" && a.result.events.length) {
-    return `<div class="panel tw"><b>Ereignisse</b><table><thead><tr><th>ID</th><th>Zeitraum</th><th>Ort</th><th>Anzahl</th><th>Quellen</th><th>Bestätigung</th><th>Widersprüche</th><th>Belege</th></tr></thead><tbody>${a.result.events.map((e) => {
-      const t = (m) => new Date(m * 60000).toISOString().slice(11, 16);
-      return `<tr><td>${idref(e.id)}</td><td>${t(e.start)}–${t(e.end)}</td><td>${esc(e.places.join(", ") || (e.lat != null ? `${e.lat}, ${e.lon}` : "—"))}</td><td>${e.anzahl_max != null ? `${e.anzahl_min}–${e.anzahl_max}` : "—"}</td><td>${e.sources.map(idref).join(" ")}</td><td>${e.confidence}</td><td class="wrap">${esc(e.conflicts.join("; "))}</td><td class="wrap">${e.members.map(idref).join(" ")}</td></tr>`;
+    return `<div class="panel tw"><b>Ereignisse</b><table><thead><tr><th>ID</th><th>Zeitraum</th><th>Ort</th><th>Anzahl</th><th>Quellen</th><th>Bestätigung</th><th>Widersprüche</th><th>Belege</th></tr></thead><tbody>${a.result.events.slice(0, 300).map((e) => {
+      const t = (m) => { const d = new Date(m * 60000).toISOString(); return `${d.slice(8, 10)}.${d.slice(5, 7)}. ${d.slice(11, 16)}`; };
+      return `<tr><td>${idref(e.id)}</td><td>${t(e.start)}–${t(e.end)}</td><td>${esc(e.places.join(", ") || (e.lat != null ? `${e.lat}, ${e.lon}` : "—"))}</td><td>${e.anzahl_max != null ? `${e.anzahl_min}–${e.anzahl_max}` : "—"}</td><td>${e.sources.map(idref).join(" ")}</td><td>${e.confidence}${e.sources.length < 2 ? ' <span class="pill">Einzelmeldung</span>' : ""}</td><td class="wrap">${esc(e.conflicts.join("; "))}</td><td class="wrap">${e.members.slice(0, 40).map(idref).join(" ")}${e.members.length > 40 ? ` … (+${e.members.length - 40})` : ""}</td></tr>`;
     }).join("")}</tbody></table></div>`;
   }
   if (a.type === "netzwerk") {
@@ -135,15 +163,18 @@ function exportMarkdown(a) {
 // ---------- Zeitlinie ----------
 export function renderTimeline(root) {
   const s = app.state, oid = obsTableId(s);
-  const rows = s.rows.filter((r) => r.table_id === oid && (r.data.zeit || r.data.datum)).sort((a, b) => `${a.data.datum || ""} ${a.data.zeit || ""}`.localeCompare(`${b.data.datum || ""} ${b.data.zeit || ""}`));
+  const all = s.rows.filter((r) => r.table_id === oid && (r.data.zeit || r.data.datum)).sort((a, b) => `${a.data.datum || ""} ${a.data.zeit || ""}`.localeCompare(`${b.data.datum || ""} ${b.data.zeit || ""}`));
+  const pg = page(all, (r) => [r.id, r.data.datum, r.data.zeit, r.data.text, srcName(s, r.source_id)].join(" "));
+  const rows = pg.list;
   let lastDay = "";
-  root.innerHTML = `<div class="bar"><b>Zeitlinie</b><span class="pill">${rows.length} Einträge mit Zeitbezug</span><span class="pill warn">✎ = normalisiert/korrigiert</span></div><div class="pad"><div class="tl">${rows.map((r) => {
+  root.innerHTML = `<div class="bar"><b>Zeitlinie</b><span class="pill warn">✎ = normalisiert/korrigiert</span><div class="sp"></div>${pager(pg)}</div><div class="pad"><div class="tl">${rows.map((r) => {
     const day = r.data.datum || "";
     const dayHead = day !== lastDay ? `<h3 style="margin-left:-16px">${day ? new Date(day).toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" }) : "ohne Datum"}</h3>` : "";
     lastDay = day;
     const fixes = r.corrections.filter((c) => c.field === "zeit" || c.field === "datum");
     return `${dayHead}<div class="tle" style="--c:${srcColor(s, r.source_id)}"><span class="when">${r.data.zeit || "—"}</span>${idref(r.id)} <span class="muted small">${esc(srcName(s, r.source_id))} · ${esc(r.loc)}</span>${fixes.length ? ` <span class="pill warn" title="${esc(fixes.map((c) => `${c.rule}: ${c.from} → ${c.to}`).join("\n"))}">✎ ${esc(fixes.map((c) => `${c.from} → ${c.to}`).join(", "))}</span>` : ""}<div>${esc(r.data.text)}</div></div>`;
   }).join("")}</div></div>`;
+  wirePager(root, renderTimeline);
 }
 
 // ---------- Quellen ----------
@@ -156,13 +187,19 @@ export function renderSources(root) {
 export function renderCorrections(root) {
   const s = app.state;
   const all = s.rows.flatMap((r) => r.corrections.map((c) => ({ r, c })));
-  root.innerHTML = `<div class="bar"><b>Korrekturen & Normalisierungen</b><span class="pill">${all.length}</span></div><div class="tw"><table><thead><tr><th>Zeile</th><th>Quelle</th><th>Feld</th><th>Rohwert</th><th>Normwert</th><th>Regel</th><th>Erläuterung</th><th>Konfidenz</th></tr></thead><tbody>${all.map(({ r, c }) => `<tr><td>${idref(r.id)}</td><td>${idref(r.source_id)}</td><td>${esc(c.field)}</td><td><mark>${esc(c.from)}</mark></td><td><b>${esc(c.to)}</b></td><td class="mono" title="${esc(RULES[c.rule] || "")}">${c.rule}</td><td class="wrap">${esc(c.note || RULES[c.rule] || "")}</td><td>${c.confidence}</td></tr>`).join("")}</tbody></table><div class="pad small muted">Regeln: ${Object.entries(RULES).map(([k, v]) => `<b>${k}</b> ${esc(v)}`).join(" · ")}</div></div>`;
+  const pg = page(all, ({ r, c }) => [r.id, r.source_id, c.field, c.from, c.to, c.rule, c.note].join(" "));
+  const byRule = {};
+  all.forEach(({ c }) => (byRule[c.rule] = (byRule[c.rule] || 0) + 1));
+  root.innerHTML = `<div class="bar"><b>Korrekturen & Normalisierungen</b>${Object.entries(byRule).sort().map(([k, n]) => `<span class="pill" title="${esc(RULES[k] || "")}">${k} · ${n}</span>`).join("")}<div class="sp"></div>${pager(pg)}</div><div class="tw"><table><thead><tr><th>Zeile</th><th>Quelle</th><th>Feld</th><th>Rohwert</th><th>Normwert</th><th>Regel</th><th>Erläuterung</th><th>Konfidenz</th></tr></thead><tbody>${pg.list.map(({ r, c }) => `<tr><td>${idref(r.id)}</td><td>${idref(r.source_id)}</td><td>${esc(c.field)}</td><td><mark>${esc(c.from)}</mark></td><td><b>${esc(c.to)}</b></td><td class="mono" title="${esc(RULES[c.rule] || "")}">${c.rule}</td><td class="wrap">${esc(c.note || RULES[c.rule] || "")}</td><td>${c.confidence}</td></tr>`).join("")}</tbody></table><div class="pad small muted">Regeln: ${Object.entries(RULES).map(([k, v]) => `<b>${k}</b> ${esc(v)}`).join(" · ")}</div></div>`;
+  wirePager(root, renderCorrections);
 }
 
 // ---------- Audit ----------
 export function renderAudit(root) {
   const s = app.state;
-  root.innerHTML = `<div class="bar"><b>Audit-Trail</b><span class="pill">${s.audit.length} Ereignisse</span></div><div class="tw"><table><thead><tr><th>ID</th><th>Zeit</th><th>Aktion</th><th>Details</th><th>Bezüge</th></tr></thead><tbody>${s.audit.slice().reverse().map((e) => `<tr><td class="mono">${e.id}</td><td>${ts(e.ts)}</td><td>${e.action}</td><td class="wrap">${esc(e.detail)}</td><td class="wrap">${(e.refs || []).map(idref).join(" ")}</td></tr>`).join("")}</tbody></table></div>`;
+  const pg = page(s.audit.slice().reverse(), (e) => [e.id, e.action, e.detail, ...(e.refs || [])].join(" "));
+  root.innerHTML = `<div class="bar"><b>Audit-Trail</b><div class="sp"></div>${pager(pg)}</div><div class="tw"><table><thead><tr><th>ID</th><th>Zeit</th><th>Aktion</th><th>Details</th><th>Bezüge</th></tr></thead><tbody>${pg.list.map((e) => `<tr><td class="mono">${e.id}</td><td>${ts(e.ts)}</td><td>${e.action}</td><td class="wrap">${esc(e.detail)}</td><td class="wrap">${(e.refs || []).slice(0, 30).map(idref).join(" ")}${(e.refs || []).length > 30 ? " …" : ""}</td></tr>`).join("")}</tbody></table></div>`;
+  wirePager(root, renderAudit);
 }
 
 // ---------- Inspector ----------
@@ -198,7 +235,7 @@ export function inspectorHtml(id) {
       <div class="foot" style="justify-content:flex-start">${x.status !== "accepted" ? `<button class="primary sm" data-link-act="accepted" data-link="${id}">Bestätigen</button>` : ""}${x.status !== "rejected" ? `<button class="btn sm" data-link-act="rejected" data-link="${id}">Verwerfen</button>` : ""}</div>`;
   } else if (pre === "CALC") {
     title = `${id} · Schritt ${x.step}: ${esc(x.title)}`;
-    body = `<div class="kv"><div>Analyse</div><div>${idref(x.analysis_id)}</div><div>Operation</div><div class="mono">${x.op}</div><div>Formel</div><div>${esc(x.formula)}</div></div><h3>Inputs (${x.inputs.length})</h3><div>${x.inputs.map(idref).join(" ")}</div><h3>Output</h3><pre class="seg">${linkIds(esc(JSON.stringify(x.output, null, 1)))}</pre>`;
+    body = `<div class="kv"><div>Analyse</div><div>${idref(x.analysis_id)}</div><div>Operation</div><div class="mono">${x.op}</div><div>Formel</div><div>${esc(x.formula)}</div></div><h3>Inputs (${x.inputs.length})</h3><div>${x.inputs.slice(0, 300).map(idref).join(" ")}${x.inputs.length > 300 ? " …" : ""}</div><h3>Output</h3><pre class="seg">${linkIds(esc(clip(JSON.stringify(x.output, null, 1))))}</pre>`;
   } else if (pre === "ANL") {
     title = `${id} · ${esc(x.title)} v${x.version}`;
     body = `<p>Status: <b>${x.status}</b>${x.status === "stale" ? ` – betroffen durch ${x.stale_info.map(idref).join(" ")}` : ""}</p><ul>${x.result.summary.map((l) => `<li>${linkIds(esc(l))}</li>`).join("")}</ul><p>Schritte: ${x.calc_ids.map(idref).join(" ")}</p><button class="btn sm" data-open-anl="${id}">In Analyse-Ansicht öffnen</button>`;

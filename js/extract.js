@@ -24,7 +24,11 @@ function docContext(allText, state) {
     const m = allText.match(/\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b/);
     if (m) date = `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
   }
-  return { date, year: date ? date.slice(0, 4) : String(new Date().getFullYear()), utc: /\butc\b/.test(t), utcOffset: state.workspace.tz_offset_utc ?? 2 };
+  // "Bezug: … 24.09." nennt das Ereignisdatum; das Kopfdatum ist dann nur das Meldedatum
+  const bezug = allText.split("\n").map((l) => /\b(bezug|betr(?:ifft|\.)|vorfall vom|ereignis vom)\b/i.test(l) ? N.findDate(l.replace(/^.*?\b(bezug|betr(?:ifft|\.)|vorfall vom|ereignis vom)\b/i, ""), date ? date.slice(0, 4) : undefined) : null).find((d) => d && !d.partial);
+  if (bezug && bezug.value !== date) return { ...docContext(allText.replace(/\b(bezug|betr(?:ifft|\.)|vorfall vom|ereignis vom)\b/gi, "·"), state), date: bezug.value, reportDate: date, bezug: true };
+  const night = /\bnacht\b|\bnachts\b|nachtschicht/.test(t.split("\n").slice(0, 3).join(" "));
+  return { date, night, year: date ? date.slice(0, 4) : String(new Date().getFullYear()), utc: /\butc\b/.test(t), utcOffset: state.workspace.tz_offset_utc ?? 2 };
 }
 
 // Kernfunktion: Text → Beobachtungsfelder + Korrekturen
@@ -39,9 +43,16 @@ export function analyzeText(text, ctx, profile) {
     if (ctx.utc) {
       const loc = N.applyUtc(v, ctx.utcOffset);
       corr.push({ field: "zeit", from: `${v} UTC`, to: loc, rule: "T6", note: `UTC+${ctx.utcOffset} (Dokument nennt UTC)`, confidence: 0.95 });
+      data._utc = v;
       v = loc;
     }
     if (t.rule !== "T1" || note) corr.push({ field: "zeit", from: t.raw, to: t.value, rule: t.rule, note: note || N.RULES[t.rule], confidence: t.confidence });
+    const hh = +v.slice(0, 2);
+    if (ctx.night && (t.rule === "T4" || t.rule === "T5") && hh >= 6 && hh < 12) {
+      const ev = `${String(hh + 12).padStart(2, "0")}${v.slice(2)}`;
+      corr.push({ field: "zeit", from: v, to: ev, rule: "T9", note: N.RULES.T9, confidence: 0.6 });
+      v = ev;
+    }
     if (t.reportTime) data.meldezeit = t.reportTime;
     data.zeit = v;
     conf = Math.min(conf, t.confidence);
@@ -52,8 +63,18 @@ export function analyzeText(text, ctx, profile) {
     if (d.rule !== "D1") corr.push({ field: "datum", from: d.raw, to: d.value, rule: d.rule, note: N.RULES[d.rule], confidence: d.confidence });
   } else if (ctx.date && (data.zeit || d?.partial)) {
     data.datum = ctx.date;
-    corr.push({ field: "datum", from: d?.raw || "—", to: ctx.date, rule: "D2", note: N.RULES.D2, confidence: 0.8 });
+    corr.push({ field: "datum", from: d?.raw || "—", to: ctx.date, rule: ctx.bezug ? "D5" : "D2", note: ctx.bezug ? `${N.RULES.D5} (Meldedatum ${ctx.reportDate})` : N.RULES.D2, confidence: 0.8 });
+    if (ctx.night && data.zeit && +data.zeit.slice(0, 2) < 12) {
+      const nd = new Date(Date.parse(ctx.date + "T00:00:00Z") + 864e5).toISOString().slice(0, 10);
+      corr.push({ field: "datum", from: ctx.date, to: nd, rule: "D4", note: N.RULES.D4, confidence: 0.75 });
+      data.datum = nd;
+    }
   }
+  if (data._utc && data.datum) {
+    const l = N.utcToLocal(data.datum, data._utc, ctx.utcOffset);
+    if (l.dayShift) { corr.push({ field: "datum", from: data.datum, to: l.date, rule: "T6", note: "Datumswechsel durch UTC-Umrechnung", confidence: 0.9 }); data.datum = l.date; }
+  }
+  delete data._utc;
   const c = N.findCoords(text) || N.findDecimalPair(text);
   const places = N.findPlaces(text, profile.gazetteer);
   if (places.length) data.ort = places[0].name;
@@ -94,17 +115,18 @@ function columnRoles(header) {
   header.forEach((h, i) => {
     const f = fold(h);
     const set = (k) => { if (roles[k] == null) roles[k] = i; };
-    if (/zeitstempel|timestamp|uhrzeit|^zeit/.test(f)) set("zeit");
+    if (/zeitstempel|timestamp|uhrzeit|^zeit|^ts$|datetime|^time/.test(f)) set("zeit");
     if (/^(breite|lat)/.test(f)) set("lat");
     if (/^(laenge|lon|lng)/.test(f)) set("lon");
     if (/anzahl|menge|count|stueck/.test(f)) set("anzahl");
-    if (/^(typ|art|objekt|teil|type)/.test(f)) set("objekt");
+    if (/^(typ|art|objekt|teil|type|klasse|class)/.test(f)) set("objekt");
     if (/^(von|from|absender|sender)$/.test(f)) set("von");
     if (/^(an|to|empfaenger)$/.test(f)) set("an");
-    if (/lieferant|firma|person|sensor|betreiber|kunde/.test(f)) set("akteur");
+    if (/lieferant|firma|person|sensor|betreiber|kunde|^name$|schiff/.test(f)) set("akteur");
     if (/betrag|wert|eur|preis|summe/.test(f)) set("betrag");
+    if (/konfidenz|confidence|score|wahrscheinlich/.test(f)) set("konf");
     if (/hafen|^ort|standort|stadt/.test(f)) set("ort");
-    if (/bestellung|^po|^id$|^nr|track|aktenzeichen|^az/.test(f)) set("ref");
+    if (/bestellung|^po|^id$|^nr|track|aktenzeichen|^az|mmsi|imo/.test(f)) set("ref");
   });
   // Bezugsdatum einer Zeile: explizites Datum vor Soll-Termin vor Ist-Termin vor Bestelldatum
   for (const re of [/^datum|^date/, /zugesagt|faellig|^soll/, /geliefert|^ist/, /bestellt/]) {
@@ -127,7 +149,7 @@ function normCell(v, ctx, kind) {
   const corr = [];
   if (v instanceof Date) {
     const s = cellStr(v);
-    return { date: s.slice(0, 10), time: kind === "zeit" && s.slice(11) !== "00:00" ? s.slice(11) : null, corr: [{ from: "Excel-Datum", to: s, rule: "T7", note: N.RULES.T7, confidence: 0.99 }] };
+    return { date: s.slice(0, 10), time: kind === "zeit" ? s.slice(11) : null, corr: [{ from: "Excel-Datum", to: s, rule: "T7", note: N.RULES.T7, confidence: 0.99 }] };
   }
   if (typeof v === "number" && kind === "zeit" && v < 1) {
     const mins = Math.round(v * 1440), s = `${String(Math.floor(mins / 60)).padStart(2, "0")}:${String(mins % 60).padStart(2, "0")}`;
@@ -135,12 +157,26 @@ function normCell(v, ctx, kind) {
   }
   const s = String(v ?? "");
   if (!s.trim()) return {};
+  const iso = N.parseIso(s, ctx.utcOffset ?? 2);
+  if (iso) {
+    if (iso.rule === "T6" || ctx.utcCol) {
+      const l = ctx.utcCol && iso.rule !== "T6" ? { ...N.utcToLocal(iso.date, iso.time, ctx.utcOffset ?? 2), note: `Spalte in UTC → UTC+${ctx.utcOffset ?? 2}` } : iso;
+      corr.push({ from: s, to: `${l.date} ${l.time}`, rule: "T6", note: l.note, confidence: 0.97 });
+      return { date: l.date, time: kind === "zeit" ? l.time : null, corr };
+    }
+    return { date: iso.date, time: kind === "zeit" ? iso.time : null, corr };
+  }
   const d = N.findDate(s, ctx.year);
   const ts = kind === "zeit" ? N.findTimes(s) : [];
   const t = ts[0];
   const out = { corr };
   if (d && !d.partial) { out.date = d.value; if (d.rule !== "D1") corr.push({ from: d.raw, to: d.value, rule: d.rule, note: N.RULES[d.rule], confidence: d.confidence }); }
   if (t) { out.time = t.value; if (t.rule !== "T1" || t.raw.includes(".")) corr.push({ from: t.raw, to: t.value, rule: t.rule, note: t.note || N.RULES[t.rule], confidence: t.confidence }); }
+  if (t && ctx.utcCol && out.date) {
+    const l = N.utcToLocal(out.date, out.time, ctx.utcOffset ?? 2);
+    corr.push({ from: `${out.date} ${out.time} UTC`, to: `${l.date} ${l.time}`, rule: "T6", note: `Spalte in UTC → UTC+${ctx.utcOffset ?? 2}`, confidence: 0.95 });
+    out.date = l.date; out.time = l.time;
+  }
   return out;
 }
 
@@ -189,26 +225,44 @@ export function ingest(state, source, parsed, opts = {}) {
     }
   }
 
+  if (parsed.meta) {
+    const m = parsed.meta;
+    const od = { text: `E-Mail: ${m.betreff}`, von: m.von, an: m.an, objekt: "E-Mail", akteure: [m.von, m.an].filter(Boolean).join("; ") };
+    if (m.date) {
+      // unabhaengig von der Zeitzone des Browsers in Workspace-Lokalzeit umrechnen
+      const l = new Date(m.date.getTime() + (state.workspace.tz_offset_utc ?? 2) * 3600000).toISOString();
+      od.datum = l.slice(0, 10); od.zeit = l.slice(11, 16);
+    }
+    const seg = { id: nextId(state, "SEG"), source_id: source.id, loc: "Kopf", text: `Von: ${m.von} · An: ${m.an} · Datum: ${m.date?.toISOString() || "—"} · Betreff: ${m.betreff}` };
+    state.segments.push(seg);
+    made.segments++;
+    addObs(seg.id, "Kopf", { data: od, corr: [], conf: 1 }, { method: "kopfdaten" });
+  }
+
   if (parsed.sheets) {
     for (const sh of parsed.sheets) {
       const roles = columnRoles(sh.header);
       const firstDate = sh.rows.map((r) => r[roles.zeit ?? roles.datum]).map((v) => (v instanceof Date ? cellStr(v).slice(0, 10) : N.findDate(String(v ?? ""))?.value)).find(Boolean);
-      const ctx = { date: firstDate || null, year: (firstDate || String(new Date().getFullYear())).slice(0, 4) };
-      const dateCols = sh.header.map((h, i) => i).filter((i) => i === roles.zeit || /datum|date|zugesagt|bestellt|geliefert|faellig|zeit/.test(fold(sh.header[i])));
+      const ctx = { date: firstDate || source.context?.date || null, year: (firstDate || source.context?.date || String(new Date().getFullYear())).slice(0, 4), utcOffset: state.workspace.tz_offset_utc ?? 2 };
+      const dateCols = sh.header.map((h, i) => i).filter((i) => i === roles.zeit || /datum|date|zugesagt|bestellt|geliefert|faellig|zeit/.test(fold(sh.header[i]))).sort((a, b) => (a === roles.zeit) - (b === roles.zeit));
       const columns = [...sh.header, ...dateCols.map((i) => `${sh.header[i]} (norm)`)];
       const tbl = { id: nextId(state, "TBL"), name: `${source.name} › ${sh.name}`, kind: "raw", source_id: source.id, columns, roles, created_at: now() };
       state.tables.push(tbl);
       made.tables.push(tbl.id);
-      source.context = ctx;
+      if (!parsed.pages) source.context = ctx;
+      const lastDate = {};
       sh.rows.forEach((r, i) => {
         const loc = `${sh.name}!Z.${i + 2}`;
         const data = {}, corrections = [];
         sh.header.forEach((h, j) => { data[h] = r[j] instanceof Date ? cellStr(r[j]) : r[j]; });
         const norm = {};
         for (const j of dateCols) {
-          const n = normCell(r[j], ctx, j === roles.zeit ? "zeit" : "datum");
+          const n = normCell(r[j], { ...ctx, utcCol: /utc|gmt|zulu/.test(fold(sh.header[j])) }, j === roles.zeit ? "zeit" : "datum");
           let date = n.date, corr = n.corr || [];
-          if (!date && n.time && ctx.date) { date = ctx.date; corr = [...corr, { from: "—", to: ctx.date, rule: "D2", note: "Datum aus übrigen Zeilen des Blatts", confidence: 0.75 }]; }
+          const dcol = roles.datum != null && roles.datum !== j ? norm[roles.datum]?.date : null;
+          if (!date && n.time && dcol) { date = dcol; corr = [...corr, { from: "—", to: date, rule: "D1", note: `Datum aus Spalte „${sh.header[roles.datum]}“`, confidence: 0.95 }]; }
+          if (!date && n.time && (lastDate[j] || ctx.date)) { date = lastDate[j] || ctx.date; corr = [...corr, { from: "—", to: date, rule: "D2", note: lastDate[j] ? "Datum aus vorheriger Zeile übernommen" : "Datum aus übrigen Zeilen des Blatts", confidence: 0.75 }]; }
+          if (date) lastDate[j] = date;
           norm[j] = { date, time: n.time };
           data[`${sh.header[j]} (norm)`] = [date, n.time].filter(Boolean).join(" ") || "";
           corrections.push(...corr.map((c) => ({ ...c, field: sh.header[j], at: now() })));
@@ -241,10 +295,16 @@ export function ingest(state, source, parsed, opts = {}) {
         }
         Object.keys(od).forEach((k) => od[k] === undefined && delete od[k]);
         const oc = corrections.filter((c) => c.field === sh.header[tj] || c.field === "lat/lon").map((c) => ({ ...c, field: c.field === "lat/lon" ? c.field : "zeit" }));
-        addObs(raw.id, loc, { data: od, corr: oc, conf: Math.min(1, ...oc.map((c) => c.confidence)) }, { method: "tabelle" });
+        let conf = Math.min(1, ...oc.map((c) => c.confidence));
+        const kv = roles.konf != null ? parseFloat(String(r[roles.konf]).replace(",", ".")) : NaN;
+        if (!isNaN(kv)) conf = Math.min(conf, kv > 1 ? kv / 100 : kv); // Konfidenz-Spalte der Quelle uebernehmen
+        addObs(raw.id, loc, { data: od, corr: oc, conf }, { method: "tabelle" });
       });
     }
   }
+  const vocab = profile.objects.map(fold);
+  const whole = fold(parsed.pages ? parsed.pages.flatMap((p) => p.lines).join(" ") : (parsed.sheets || []).flatMap((sh) => [sh.header.join(" "), ...sh.rows.map((r) => r.join(" "))]).join(" "));
+  source.relevant = vocab.some((v) => whole.includes(v));
   return made;
 }
 

@@ -39,7 +39,7 @@ export function save(state) {
   pending = setTimeout(async () => {
     try {
       const db = await open();
-      db.transaction(STORE, "readwrite").objectStore(STORE).put(JSON.parse(JSON.stringify(state)), KEY);
+      db.transaction(STORE, "readwrite").objectStore(STORE).put(state, KEY); // structured clone, kein JSON-Umweg
     } catch (e) { console.warn("Speichern fehlgeschlagen", e); }
   }, 150);
 }

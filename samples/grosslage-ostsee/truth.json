@@ -1,0 +1,3345 @@
+{
+ "hinweis": "Ground Truth fuer die Auswertung – nicht importieren",
+ "vorfaelle": [
+  {
+   "id": "I1",
+   "start": "2026-09-22 23:40",
+   "dauer_min": 30,
+   "ort": "Kiel",
+   "lat": 54.32,
+   "lon": 10.14,
+   "anzahl": 2,
+   "schiff": null
+  },
+  {
+   "id": "I2",
+   "start": "2026-09-23 02:10",
+   "dauer_min": 35,
+   "ort": "Warnemuende",
+   "lat": 54.18,
+   "lon": 12.08,
+   "anzahl": 3,
+   "schiff": null
+  },
+  {
+   "id": "I3",
+   "start": "2026-09-23 21:15",
+   "dauer_min": 25,
+   "ort": "Ruegen",
+   "lat": 54.42,
+   "lon": 13.4,
+   "anzahl": 1,
+   "schiff": null
+  },
+  {
+   "id": "I4",
+   "start": "2026-09-24 02:30",
+   "dauer_min": 35,
+   "ort": "Fehmarnbelt",
+   "lat": 54.58,
+   "lon": 11.3,
+   "anzahl": 4,
+   "schiff": "Baltic Star"
+  },
+  {
+   "id": "I5",
+   "start": "2026-09-24 04:20",
+   "dauer_min": 30,
+   "ort": "Rostock",
+   "lat": 54.09,
+   "lon": 12.1,
+   "anzahl": 2,
+   "schiff": "Baltic Star"
+  },
+  {
+   "id": "I6",
+   "start": "2026-09-24 22:50",
+   "dauer_min": 30,
+   "ort": "Travemuende",
+   "lat": 53.96,
+   "lon": 10.87,
+   "anzahl": 3,
+   "schiff": null
+  },
+  {
+   "id": "I7",
+   "start": "2026-09-25 01:40",
+   "dauer_min": 30,
+   "ort": "Heiligenhafen",
+   "lat": 54.37,
+   "lon": 10.98,
+   "anzahl": 2,
+   "schiff": null
+  },
+  {
+   "id": "I8",
+   "start": "2026-09-25 03:30",
+   "dauer_min": 25,
+   "ort": "Kiel",
+   "lat": 54.32,
+   "lon": 10.14,
+   "anzahl": 3,
+   "schiff": null
+  }
+ ],
+ "stoerquellen": [
+  {
+   "id": "D1",
+   "zeit": "2026-09-22 18:10",
+   "ort": "Kiel",
+   "art": "Modellflug angemeldet"
+  },
+  {
+   "id": "D2",
+   "zeit": "2026-09-23 17:30",
+   "ort": "Luebeck",
+   "art": "Modellflug angemeldet"
+  },
+  {
+   "id": "D3",
+   "zeit": "2026-09-24 05:40",
+   "ort": "Ruegen",
+   "art": "Vogelschwarm (Radar)"
+  },
+  {
+   "id": "D4",
+   "zeit": "2026-09-24 23:55",
+   "ort": "Puttgarden",
+   "art": "Faehrbeleuchtung"
+  }
+ ],
+ "zeilen": [
+  {
+   "file": "anrufnotizen_leitstelle_2209.txt",
+   "loc": "Z.3",
+   "date": "2026-09-22",
+   "time": "23:40",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2209.txt",
+   "loc": "Z.4",
+   "date": "2026-09-22",
+   "time": "23:43",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2209.txt",
+   "loc": "Z.5",
+   "date": "2026-09-23",
+   "time": "00:00",
+   "incident": "I1",
+   "tolerance_min": 35
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2209.txt",
+   "loc": "Z.6",
+   "date": "2026-09-23",
+   "time": "00:09",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2209.txt",
+   "loc": "Z.7",
+   "date": "2026-09-23",
+   "time": "02:18",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2209.txt",
+   "loc": "Z.8",
+   "date": "2026-09-23",
+   "time": "02:24",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.3",
+   "date": "2026-09-23",
+   "time": "21:25",
+   "incident": "I3",
+   "tolerance_min": 5
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.4",
+   "date": "2026-09-23",
+   "time": "21:35",
+   "incident": "I3",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.5",
+   "date": "2026-09-23",
+   "time": "21:43",
+   "incident": "I3",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.6",
+   "date": "2026-09-23",
+   "time": "21:39",
+   "incident": "I3",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.7",
+   "date": "2026-09-24",
+   "time": "02:29",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.8",
+   "date": "2026-09-24",
+   "time": "03:01",
+   "incident": "I4",
+   "tolerance_min": 12
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.9",
+   "date": "2026-09-24",
+   "time": "04:00",
+   "incident": "I5",
+   "tolerance_min": 35
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2309.txt",
+   "loc": "Z.10",
+   "date": "2026-09-24",
+   "time": "04:25",
+   "incident": "I5",
+   "tolerance_min": 5
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.3",
+   "date": "2026-09-24",
+   "time": "23:00",
+   "incident": "I6",
+   "tolerance_min": 35
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.4",
+   "date": "2026-09-24",
+   "time": "23:09",
+   "incident": "I6",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.5",
+   "date": "2026-09-24",
+   "time": "23:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.6",
+   "date": "2026-09-25",
+   "time": "01:49",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.7",
+   "date": "2026-09-25",
+   "time": "02:00",
+   "incident": "I7",
+   "tolerance_min": 35
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.8",
+   "date": "2026-09-25",
+   "time": "03:43",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.9",
+   "date": "2026-09-25",
+   "time": "03:45",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.10",
+   "date": "2026-09-25",
+   "time": "03:56",
+   "incident": "I8",
+   "tolerance_min": 12
+  },
+  {
+   "file": "anrufnotizen_leitstelle_2409.txt",
+   "loc": "Z.11",
+   "date": "2026-09-25",
+   "time": "03:59",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.2",
+   "date": "2026-09-22",
+   "time": "20:21",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.3",
+   "date": "2026-09-22",
+   "time": "23:29",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.4",
+   "date": "2026-09-23",
+   "time": "01:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.5",
+   "date": "2026-09-23",
+   "time": "02:08",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.6",
+   "date": "2026-09-23",
+   "time": "05:49",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.7",
+   "date": "2026-09-23",
+   "time": "07:32",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.8",
+   "date": "2026-09-23",
+   "time": "08:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.9",
+   "date": "2026-09-23",
+   "time": "09:49",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.10",
+   "date": "2026-09-23",
+   "time": "10:02",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.11",
+   "date": "2026-09-23",
+   "time": "10:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.12",
+   "date": "2026-09-23",
+   "time": "11:14",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.13",
+   "date": "2026-09-23",
+   "time": "11:53",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.14",
+   "date": "2026-09-23",
+   "time": "14:22",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.15",
+   "date": "2026-09-23",
+   "time": "14:48",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.16",
+   "date": "2026-09-23",
+   "time": "18:49",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.17",
+   "date": "2026-09-23",
+   "time": "19:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.18",
+   "date": "2026-09-23",
+   "time": "20:05",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.19",
+   "date": "2026-09-23",
+   "time": "23:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.20",
+   "date": "2026-09-24",
+   "time": "00:41",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.21",
+   "date": "2026-09-24",
+   "time": "01:03",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.22",
+   "date": "2026-09-24",
+   "time": "01:28",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.23",
+   "date": "2026-09-24",
+   "time": "02:30",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.24",
+   "date": "2026-09-24",
+   "time": "02:35",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.25",
+   "date": "2026-09-24",
+   "time": "02:40",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.26",
+   "date": "2026-09-24",
+   "time": "02:44",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.27",
+   "date": "2026-09-24",
+   "time": "02:45",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.28",
+   "date": "2026-09-24",
+   "time": "02:48",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.29",
+   "date": "2026-09-24",
+   "time": "02:50",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.30",
+   "date": "2026-09-24",
+   "time": "02:55",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.31",
+   "date": "2026-09-24",
+   "time": "03:00",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.32",
+   "date": "2026-09-24",
+   "time": "03:09",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.33",
+   "date": "2026-09-24",
+   "time": "03:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.34",
+   "date": "2026-09-24",
+   "time": "06:47",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.35",
+   "date": "2026-09-24",
+   "time": "06:52",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.36",
+   "date": "2026-09-24",
+   "time": "07:10",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.37",
+   "date": "2026-09-24",
+   "time": "07:27",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.38",
+   "date": "2026-09-24",
+   "time": "09:24",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.39",
+   "date": "2026-09-24",
+   "time": "12:28",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.40",
+   "date": "2026-09-24",
+   "time": "20:35",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.41",
+   "date": "2026-09-24",
+   "time": "21:14",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.42",
+   "date": "2026-09-25",
+   "time": "00:40",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.43",
+   "date": "2026-09-25",
+   "time": "00:42",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.44",
+   "date": "2026-09-25",
+   "time": "01:40",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.45",
+   "date": "2026-09-25",
+   "time": "01:42",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.46",
+   "date": "2026-09-25",
+   "time": "01:44",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.47",
+   "date": "2026-09-25",
+   "time": "01:48",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.48",
+   "date": "2026-09-25",
+   "time": "01:52",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.49",
+   "date": "2026-09-25",
+   "time": "01:56",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.50",
+   "date": "2026-09-25",
+   "time": "02:00",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.51",
+   "date": "2026-09-25",
+   "time": "02:04",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.52",
+   "date": "2026-09-25",
+   "time": "02:08",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.53",
+   "date": "2026-09-25",
+   "time": "04:32",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.54",
+   "date": "2026-09-25",
+   "time": "04:59",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.55",
+   "date": "2026-09-25",
+   "time": "05:28",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.56",
+   "date": "2026-09-25",
+   "time": "06:22",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.57",
+   "date": "2026-09-25",
+   "time": "07:59",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.58",
+   "date": "2026-09-25",
+   "time": "08:46",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.59",
+   "date": "2026-09-25",
+   "time": "12:55",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.60",
+   "date": "2026-09-25",
+   "time": "13:08",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.61",
+   "date": "2026-09-25",
+   "time": "14:03",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.62",
+   "date": "2026-09-25",
+   "time": "15:28",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.63",
+   "date": "2026-09-25",
+   "time": "17:20",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.64",
+   "date": "2026-09-25",
+   "time": "17:37",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.65",
+   "date": "2026-09-25",
+   "time": "20:04",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.66",
+   "date": "2026-09-25",
+   "time": "21:08",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.67",
+   "date": "2026-09-25",
+   "time": "22:11",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.68",
+   "date": "2026-09-26",
+   "time": "00:22",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.69",
+   "date": "2026-09-26",
+   "time": "00:32",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.70",
+   "date": "2026-09-26",
+   "time": "01:24",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.71",
+   "date": "2026-09-26",
+   "time": "02:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.72",
+   "date": "2026-09-26",
+   "time": "03:04",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.73",
+   "date": "2026-09-26",
+   "time": "03:23",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.74",
+   "date": "2026-09-26",
+   "time": "04:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.75",
+   "date": "2026-09-26",
+   "time": "05:07",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-fehmarn-nord.xlsx",
+   "loc": "Detektionen!Z.76",
+   "date": "2026-09-26",
+   "time": "05:19",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.2",
+   "date": "2026-09-22",
+   "time": "18:10",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.3",
+   "date": "2026-09-22",
+   "time": "18:23",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.4",
+   "date": "2026-09-22",
+   "time": "20:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.5",
+   "date": "2026-09-22",
+   "time": "21:57",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.6",
+   "date": "2026-09-22",
+   "time": "23:40",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.7",
+   "date": "2026-09-22",
+   "time": "23:44",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.8",
+   "date": "2026-09-22",
+   "time": "23:48",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.9",
+   "date": "2026-09-22",
+   "time": "23:52",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.10",
+   "date": "2026-09-22",
+   "time": "23:56",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.11",
+   "date": "2026-09-23",
+   "time": "00:00",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.12",
+   "date": "2026-09-23",
+   "time": "00:04",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.13",
+   "date": "2026-09-23",
+   "time": "00:08",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.14",
+   "date": "2026-09-23",
+   "time": "00:12",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.15",
+   "date": "2026-09-23",
+   "time": "01:01",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.16",
+   "date": "2026-09-23",
+   "time": "01:10",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.17",
+   "date": "2026-09-23",
+   "time": "02:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.18",
+   "date": "2026-09-23",
+   "time": "03:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.19",
+   "date": "2026-09-23",
+   "time": "04:02",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.20",
+   "date": "2026-09-23",
+   "time": "04:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.21",
+   "date": "2026-09-23",
+   "time": "06:27",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.22",
+   "date": "2026-09-23",
+   "time": "07:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.23",
+   "date": "2026-09-23",
+   "time": "07:33",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.24",
+   "date": "2026-09-23",
+   "time": "09:37",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.25",
+   "date": "2026-09-23",
+   "time": "10:22",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.26",
+   "date": "2026-09-23",
+   "time": "10:41",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.27",
+   "date": "2026-09-23",
+   "time": "11:18",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.28",
+   "date": "2026-09-23",
+   "time": "11:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.29",
+   "date": "2026-09-23",
+   "time": "11:56",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.30",
+   "date": "2026-09-23",
+   "time": "21:24",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.31",
+   "date": "2026-09-23",
+   "time": "23:02",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.32",
+   "date": "2026-09-23",
+   "time": "23:21",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.33",
+   "date": "2026-09-23",
+   "time": "23:29",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.34",
+   "date": "2026-09-24",
+   "time": "01:55",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.35",
+   "date": "2026-09-24",
+   "time": "04:13",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.36",
+   "date": "2026-09-24",
+   "time": "04:48",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.37",
+   "date": "2026-09-24",
+   "time": "07:09",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.38",
+   "date": "2026-09-24",
+   "time": "07:17",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.39",
+   "date": "2026-09-24",
+   "time": "08:40",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.40",
+   "date": "2026-09-24",
+   "time": "10:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.41",
+   "date": "2026-09-24",
+   "time": "11:09",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.42",
+   "date": "2026-09-24",
+   "time": "11:10",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.43",
+   "date": "2026-09-24",
+   "time": "11:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.44",
+   "date": "2026-09-24",
+   "time": "11:33",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.45",
+   "date": "2026-09-24",
+   "time": "12:32",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.46",
+   "date": "2026-09-24",
+   "time": "17:55",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.47",
+   "date": "2026-09-24",
+   "time": "18:21",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.48",
+   "date": "2026-09-24",
+   "time": "18:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.49",
+   "date": "2026-09-24",
+   "time": "20:35",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.50",
+   "date": "2026-09-24",
+   "time": "23:03",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.51",
+   "date": "2026-09-25",
+   "time": "00:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.52",
+   "date": "2026-09-25",
+   "time": "00:50",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.53",
+   "date": "2026-09-25",
+   "time": "03:30",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.54",
+   "date": "2026-09-25",
+   "time": "03:34",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.55",
+   "date": "2026-09-25",
+   "time": "03:38",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.56",
+   "date": "2026-09-25",
+   "time": "03:42",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.57",
+   "date": "2026-09-25",
+   "time": "03:46",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.58",
+   "date": "2026-09-25",
+   "time": "03:50",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.59",
+   "date": "2026-09-25",
+   "time": "03:54",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.60",
+   "date": "2026-09-25",
+   "time": "04:35",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.61",
+   "date": "2026-09-25",
+   "time": "07:12",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.62",
+   "date": "2026-09-25",
+   "time": "07:55",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.63",
+   "date": "2026-09-25",
+   "time": "08:05",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.64",
+   "date": "2026-09-25",
+   "time": "08:46",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.65",
+   "date": "2026-09-25",
+   "time": "11:47",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.66",
+   "date": "2026-09-25",
+   "time": "14:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.67",
+   "date": "2026-09-25",
+   "time": "18:25",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.68",
+   "date": "2026-09-25",
+   "time": "18:42",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.69",
+   "date": "2026-09-25",
+   "time": "19:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.70",
+   "date": "2026-09-25",
+   "time": "19:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.71",
+   "date": "2026-09-25",
+   "time": "21:56",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.72",
+   "date": "2026-09-25",
+   "time": "22:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.73",
+   "date": "2026-09-25",
+   "time": "23:05",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.74",
+   "date": "2026-09-26",
+   "time": "01:48",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.75",
+   "date": "2026-09-26",
+   "time": "01:55",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.76",
+   "date": "2026-09-26",
+   "time": "05:17",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-kiel-hafen.xlsx",
+   "loc": "Detektionen!Z.77",
+   "date": "2026-09-26",
+   "time": "05:58",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.2",
+   "date": "2026-09-22",
+   "time": "20:35",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.3",
+   "date": "2026-09-22",
+   "time": "21:32",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.4",
+   "date": "2026-09-22",
+   "time": "22:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.5",
+   "date": "2026-09-22",
+   "time": "22:59",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.6",
+   "date": "2026-09-23",
+   "time": "01:49",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.7",
+   "date": "2026-09-23",
+   "time": "02:10",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.8",
+   "date": "2026-09-23",
+   "time": "02:15",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.9",
+   "date": "2026-09-23",
+   "time": "02:20",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.10",
+   "date": "2026-09-23",
+   "time": "02:25",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.11",
+   "date": "2026-09-23",
+   "time": "02:30",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.12",
+   "date": "2026-09-23",
+   "time": "02:34",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.13",
+   "date": "2026-09-23",
+   "time": "02:35",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.14",
+   "date": "2026-09-23",
+   "time": "02:40",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.15",
+   "date": "2026-09-23",
+   "time": "02:51",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.16",
+   "date": "2026-09-23",
+   "time": "05:41",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.17",
+   "date": "2026-09-23",
+   "time": "05:46",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.18",
+   "date": "2026-09-23",
+   "time": "05:59",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.19",
+   "date": "2026-09-23",
+   "time": "08:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.20",
+   "date": "2026-09-23",
+   "time": "10:04",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.21",
+   "date": "2026-09-23",
+   "time": "10:38",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.22",
+   "date": "2026-09-23",
+   "time": "11:01",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.23",
+   "date": "2026-09-23",
+   "time": "11:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.24",
+   "date": "2026-09-23",
+   "time": "12:24",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.25",
+   "date": "2026-09-23",
+   "time": "12:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.26",
+   "date": "2026-09-23",
+   "time": "12:47",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.27",
+   "date": "2026-09-23",
+   "time": "12:56",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.28",
+   "date": "2026-09-23",
+   "time": "12:57",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.29",
+   "date": "2026-09-23",
+   "time": "14:53",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.30",
+   "date": "2026-09-23",
+   "time": "15:50",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.31",
+   "date": "2026-09-23",
+   "time": "16:07",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.32",
+   "date": "2026-09-23",
+   "time": "17:46",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.33",
+   "date": "2026-09-23",
+   "time": "17:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.34",
+   "date": "2026-09-23",
+   "time": "21:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.35",
+   "date": "2026-09-24",
+   "time": "04:20",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.36",
+   "date": "2026-09-24",
+   "time": "04:23",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.37",
+   "date": "2026-09-24",
+   "time": "04:26",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.38",
+   "date": "2026-09-24",
+   "time": "04:29",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.39",
+   "date": "2026-09-24",
+   "time": "04:32",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.40",
+   "date": "2026-09-24",
+   "time": "04:35",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.41",
+   "date": "2026-09-24",
+   "time": "04:38",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.42",
+   "date": "2026-09-24",
+   "time": "04:41",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.43",
+   "date": "2026-09-24",
+   "time": "04:44",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.44",
+   "date": "2026-09-24",
+   "time": "04:47",
+   "incident": "I5",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.45",
+   "date": "2026-09-24",
+   "time": "12:20",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.46",
+   "date": "2026-09-24",
+   "time": "13:17",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.47",
+   "date": "2026-09-24",
+   "time": "13:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.48",
+   "date": "2026-09-24",
+   "time": "15:19",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.49",
+   "date": "2026-09-24",
+   "time": "15:23",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.50",
+   "date": "2026-09-24",
+   "time": "17:04",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.51",
+   "date": "2026-09-24",
+   "time": "17:14",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.52",
+   "date": "2026-09-24",
+   "time": "18:08",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.53",
+   "date": "2026-09-24",
+   "time": "20:06",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.54",
+   "date": "2026-09-24",
+   "time": "20:09",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.55",
+   "date": "2026-09-24",
+   "time": "20:22",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.56",
+   "date": "2026-09-24",
+   "time": "20:38",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.57",
+   "date": "2026-09-24",
+   "time": "21:03",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.58",
+   "date": "2026-09-24",
+   "time": "22:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.59",
+   "date": "2026-09-24",
+   "time": "22:49",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.60",
+   "date": "2026-09-25",
+   "time": "04:10",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.61",
+   "date": "2026-09-25",
+   "time": "04:47",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.62",
+   "date": "2026-09-25",
+   "time": "05:04",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.63",
+   "date": "2026-09-25",
+   "time": "06:02",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.64",
+   "date": "2026-09-25",
+   "time": "07:17",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.65",
+   "date": "2026-09-25",
+   "time": "07:35",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.66",
+   "date": "2026-09-25",
+   "time": "09:02",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.67",
+   "date": "2026-09-25",
+   "time": "10:02",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.68",
+   "date": "2026-09-25",
+   "time": "11:36",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.69",
+   "date": "2026-09-25",
+   "time": "14:37",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.70",
+   "date": "2026-09-25",
+   "time": "15:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.71",
+   "date": "2026-09-25",
+   "time": "16:05",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.72",
+   "date": "2026-09-25",
+   "time": "16:21",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.73",
+   "date": "2026-09-25",
+   "time": "17:46",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.74",
+   "date": "2026-09-25",
+   "time": "21:12",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.75",
+   "date": "2026-09-26",
+   "time": "04:37",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.76",
+   "date": "2026-09-26",
+   "time": "05:07",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.77",
+   "date": "2026-09-26",
+   "time": "05:32",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_rf-warnemuende.xlsx",
+   "loc": "Detektionen!Z.78",
+   "date": "2026-09-26",
+   "time": "05:56",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.2",
+   "date": "2026-09-22",
+   "time": "18:24",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.3",
+   "date": "2026-09-22",
+   "time": "20:08",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.4",
+   "date": "2026-09-22",
+   "time": "21:06",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.5",
+   "date": "2026-09-23",
+   "time": "00:55",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.6",
+   "date": "2026-09-23",
+   "time": "01:42",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.7",
+   "date": "2026-09-23",
+   "time": "02:25",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.8",
+   "date": "2026-09-23",
+   "time": "02:42",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.9",
+   "date": "2026-09-23",
+   "time": "07:40",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.10",
+   "date": "2026-09-23",
+   "time": "09:24",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.11",
+   "date": "2026-09-23",
+   "time": "12:09",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.12",
+   "date": "2026-09-23",
+   "time": "12:18",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.13",
+   "date": "2026-09-23",
+   "time": "12:19",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.14",
+   "date": "2026-09-23",
+   "time": "12:46",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.15",
+   "date": "2026-09-23",
+   "time": "14:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.16",
+   "date": "2026-09-23",
+   "time": "16:11",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.17",
+   "date": "2026-09-23",
+   "time": "16:27",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.18",
+   "date": "2026-09-23",
+   "time": "17:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.19",
+   "date": "2026-09-23",
+   "time": "17:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.20",
+   "date": "2026-09-23",
+   "time": "19:13",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.21",
+   "date": "2026-09-23",
+   "time": "22:18",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.22",
+   "date": "2026-09-24",
+   "time": "01:42",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.23",
+   "date": "2026-09-24",
+   "time": "02:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.24",
+   "date": "2026-09-24",
+   "time": "02:20",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.25",
+   "date": "2026-09-24",
+   "time": "02:30",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.26",
+   "date": "2026-09-24",
+   "time": "02:33",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.27",
+   "date": "2026-09-24",
+   "time": "02:36",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.28",
+   "date": "2026-09-24",
+   "time": "02:39",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.29",
+   "date": "2026-09-24",
+   "time": "02:42",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.30",
+   "date": "2026-09-24",
+   "time": "02:45",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.31",
+   "date": "2026-09-24",
+   "time": "02:48",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.32",
+   "date": "2026-09-24",
+   "time": "02:51",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.33",
+   "date": "2026-09-24",
+   "time": "02:54",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.34",
+   "date": "2026-09-24",
+   "time": "02:57",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.35",
+   "date": "2026-09-24",
+   "time": "03:00",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.36",
+   "date": "2026-09-24",
+   "time": "03:03",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.37",
+   "date": "2026-09-24",
+   "time": "03:47",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.38",
+   "date": "2026-09-24",
+   "time": "06:05",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.39",
+   "date": "2026-09-24",
+   "time": "07:05",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.40",
+   "date": "2026-09-24",
+   "time": "07:20",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.41",
+   "date": "2026-09-24",
+   "time": "08:58",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.42",
+   "date": "2026-09-24",
+   "time": "09:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.43",
+   "date": "2026-09-24",
+   "time": "09:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.44",
+   "date": "2026-09-24",
+   "time": "10:16",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.45",
+   "date": "2026-09-24",
+   "time": "10:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.46",
+   "date": "2026-09-24",
+   "time": "15:44",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.47",
+   "date": "2026-09-24",
+   "time": "16:01",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.48",
+   "date": "2026-09-24",
+   "time": "17:01",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.49",
+   "date": "2026-09-24",
+   "time": "21:32",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.50",
+   "date": "2026-09-24",
+   "time": "21:47",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.51",
+   "date": "2026-09-24",
+   "time": "22:22",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.52",
+   "date": "2026-09-24",
+   "time": "23:39",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.53",
+   "date": "2026-09-24",
+   "time": "23:52",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.54",
+   "date": "2026-09-25",
+   "time": "00:12",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.55",
+   "date": "2026-09-25",
+   "time": "00:55",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.56",
+   "date": "2026-09-25",
+   "time": "01:21",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.57",
+   "date": "2026-09-25",
+   "time": "01:40",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.58",
+   "date": "2026-09-25",
+   "time": "01:45",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.59",
+   "date": "2026-09-25",
+   "time": "01:50",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.60",
+   "date": "2026-09-25",
+   "time": "01:55",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.61",
+   "date": "2026-09-25",
+   "time": "02:00",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.62",
+   "date": "2026-09-25",
+   "time": "02:05",
+   "incident": "I7",
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.63",
+   "date": "2026-09-25",
+   "time": "02:27",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.64",
+   "date": "2026-09-25",
+   "time": "02:50",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.65",
+   "date": "2026-09-25",
+   "time": "03:23",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.66",
+   "date": "2026-09-25",
+   "time": "06:59",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.67",
+   "date": "2026-09-25",
+   "time": "07:54",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.68",
+   "date": "2026-09-25",
+   "time": "09:07",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.69",
+   "date": "2026-09-25",
+   "time": "09:13",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.70",
+   "date": "2026-09-25",
+   "time": "10:27",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.71",
+   "date": "2026-09-25",
+   "time": "10:39",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.72",
+   "date": "2026-09-25",
+   "time": "10:56",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.73",
+   "date": "2026-09-25",
+   "time": "11:24",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.74",
+   "date": "2026-09-25",
+   "time": "14:36",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.75",
+   "date": "2026-09-25",
+   "time": "20:59",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.76",
+   "date": "2026-09-26",
+   "time": "00:39",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.77",
+   "date": "2026-09-26",
+   "time": "01:31",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.78",
+   "date": "2026-09-26",
+   "time": "01:37",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "sensor_akustik-staberhuk.xlsx",
+   "loc": "Detektionen!Z.79",
+   "date": "2026-09-26",
+   "time": "03:37",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.2",
+   "date": "2026-09-22",
+   "time": "22:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.3",
+   "date": "2026-09-22",
+   "time": "22:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.4",
+   "date": "2026-09-22",
+   "time": "23:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.5",
+   "date": "2026-09-22",
+   "time": "23:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.6",
+   "date": "2026-09-22",
+   "time": "23:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.7",
+   "date": "2026-09-22",
+   "time": "23:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.8",
+   "date": "2026-09-23",
+   "time": "00:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.9",
+   "date": "2026-09-23",
+   "time": "00:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.10",
+   "date": "2026-09-23",
+   "time": "00:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.11",
+   "date": "2026-09-23",
+   "time": "00:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.12",
+   "date": "2026-09-23",
+   "time": "01:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.13",
+   "date": "2026-09-23",
+   "time": "01:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.14",
+   "date": "2026-09-23",
+   "time": "01:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.15",
+   "date": "2026-09-23",
+   "time": "01:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.16",
+   "date": "2026-09-23",
+   "time": "02:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.17",
+   "date": "2026-09-23",
+   "time": "02:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.18",
+   "date": "2026-09-23",
+   "time": "02:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.19",
+   "date": "2026-09-23",
+   "time": "02:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.20",
+   "date": "2026-09-23",
+   "time": "03:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.21",
+   "date": "2026-09-24",
+   "time": "01:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.22",
+   "date": "2026-09-24",
+   "time": "01:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.23",
+   "date": "2026-09-24",
+   "time": "02:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.24",
+   "date": "2026-09-24",
+   "time": "02:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.25",
+   "date": "2026-09-24",
+   "time": "02:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.26",
+   "date": "2026-09-24",
+   "time": "02:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.27",
+   "date": "2026-09-24",
+   "time": "03:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.28",
+   "date": "2026-09-24",
+   "time": "03:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.29",
+   "date": "2026-09-24",
+   "time": "03:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.30",
+   "date": "2026-09-24",
+   "time": "03:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.31",
+   "date": "2026-09-24",
+   "time": "04:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.32",
+   "date": "2026-09-24",
+   "time": "04:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.33",
+   "date": "2026-09-24",
+   "time": "04:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.34",
+   "date": "2026-09-24",
+   "time": "04:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.35",
+   "date": "2026-09-24",
+   "time": "05:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.36",
+   "date": "2026-09-24",
+   "time": "21:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.37",
+   "date": "2026-09-24",
+   "time": "21:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.38",
+   "date": "2026-09-24",
+   "time": "21:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.39",
+   "date": "2026-09-24",
+   "time": "21:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.40",
+   "date": "2026-09-24",
+   "time": "22:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.41",
+   "date": "2026-09-24",
+   "time": "22:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.42",
+   "date": "2026-09-24",
+   "time": "22:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.43",
+   "date": "2026-09-24",
+   "time": "22:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.44",
+   "date": "2026-09-24",
+   "time": "23:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.45",
+   "date": "2026-09-24",
+   "time": "23:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.46",
+   "date": "2026-09-24",
+   "time": "23:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.47",
+   "date": "2026-09-24",
+   "time": "23:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.48",
+   "date": "2026-09-25",
+   "time": "00:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.49",
+   "date": "2026-09-25",
+   "time": "00:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.50",
+   "date": "2026-09-25",
+   "time": "00:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.51",
+   "date": "2026-09-25",
+   "time": "00:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.52",
+   "date": "2026-09-25",
+   "time": "01:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.53",
+   "date": "2026-09-25",
+   "time": "01:15",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.54",
+   "date": "2026-09-25",
+   "time": "01:30",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.55",
+   "date": "2026-09-25",
+   "time": "01:45",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "ais_export_schiffe.csv",
+   "loc": "Sheet1!Z.56",
+   "date": "2026-09-25",
+   "time": "02:00",
+   "incident": null,
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.2",
+   "date": "2026-09-22",
+   "time": "23:40",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.3",
+   "date": "2026-09-22",
+   "time": "23:50",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.4",
+   "date": "2026-09-23",
+   "time": "00:01",
+   "incident": "I1",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.5",
+   "date": "2026-09-23",
+   "time": "02:10",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.6",
+   "date": "2026-09-23",
+   "time": "02:23",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.7",
+   "date": "2026-09-23",
+   "time": "02:31",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.8",
+   "date": "2026-09-23",
+   "time": "02:42",
+   "incident": "I2",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.9",
+   "date": "2026-09-23",
+   "time": "21:18",
+   "incident": "I3",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.10",
+   "date": "2026-09-23",
+   "time": "21:28",
+   "incident": "I3",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.11",
+   "date": "2026-09-23",
+   "time": "21:38",
+   "incident": "I3",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.12",
+   "date": "2026-09-24",
+   "time": "02:32",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.13",
+   "date": "2026-09-24",
+   "time": "02:41",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.14",
+   "date": "2026-09-24",
+   "time": "02:53",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.15",
+   "date": "2026-09-24",
+   "time": "03:02",
+   "incident": "I4",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.16",
+   "date": "2026-09-24",
+   "time": "22:53",
+   "incident": "I6",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.17",
+   "date": "2026-09-24",
+   "time": "23:02",
+   "incident": "I6",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.18",
+   "date": "2026-09-24",
+   "time": "23:10",
+   "incident": "I6",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.19",
+   "date": "2026-09-25",
+   "time": "03:33",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.20",
+   "date": "2026-09-25",
+   "time": "03:41",
+   "incident": "I8",
+   "tolerance_min": 0
+  },
+  {
+   "file": "detektionssystem_export.json",
+   "loc": "daten!Z.21",
+   "date": "2026-09-25",
+   "time": "03:53",
+   "incident": "I8",
+   "tolerance_min": 0
+  }
+ ]
+}

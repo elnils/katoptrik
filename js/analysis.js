@@ -84,31 +84,44 @@ export function runLagebild(state, scope = { terms: [] }, title) {
   step("Auswahl der Beobachtungen", "SELECT", rows.map((r) => r.id), { suchbegriffe: usedTerms.length ? usedTerms : "alle" }, { anzahl: rows.length, quellen: uniq(rows.map((r) => r.source_id)).length }, "Beobachtungen ∩ Suchbegriffe");
 
   const corr = rows.flatMap((r) => r.corrections.map((c) => ({ row: r.id, feld: c.field, von: c.from, nach: c.to, regel: c.rule, konfidenz: c.confidence })));
-  step("Normalisierung & Korrekturen", "NORMALIZE", corr.map((c) => c.row), { regeln: uniq(corr.map((c) => c.regel)) }, { korrekturen: corr }, "Rohwert → Normwert je Regel");
+  const perRule = {};
+  corr.forEach((c) => (perRule[c.regel] = (perRule[c.regel] || 0) + 1));
+  // Vollstaendige Korrekturen liegen an den Zeilen; der Schritt fasst zusammen und nennt Beispiele
+  step("Normalisierung & Korrekturen", "NORMALIZE", corr.map((c) => c.row), { regeln: uniq(corr.map((c) => c.regel)) }, { anzahl: corr.length, je_regel: perRule, beispiele: corr.filter((c) => c.regel !== "D2").slice(0, 60) }, "Rohwert → Normwert je Regel");
 
-  let timed = rows.filter((r) => minutes(r) != null && r.data.zeit || (windowMin >= 1440 && r.data.datum));
-  const context = rows.filter((r) => !timed.includes(r));
-  let excluded = [];
-  if (windowMin < 1440) {
-    const dates = timed.map((r) => r.data.datum).filter(Boolean);
-    const mode = dates.sort((a, b) => dates.filter((x) => x === b).length - dates.filter((x) => x === a).length)[0];
-    excluded = timed.filter((r) => r.data.datum && r.data.datum !== mode);
-    timed = timed.filter((r) => !excluded.includes(r));
-    step("Zeitraum bestimmen", "FILTER", rows.map((r) => r.id), { regel: "häufigstes Datum", datum: mode }, { im_zeitraum: timed.map((r) => r.id), ausgeschlossen: excluded.map((r) => r.id) }, "datum = modus(datum)");
-  }
-
+  const maxSpan = profile.cluster.maxSpanMin || windowMin * 4;
+  const all = rows.filter((r) => minutes(r) != null && (r.data.zeit || (windowMin >= 1440 && r.data.datum)));
+  const context = rows.filter((r) => !all.includes(r));
+  // Relevanz: Ereigniszeilen nennen ein Objekt des Profils (oder stammen aus einer einschlaegigen Quelle
+  // und tragen Ort) und sind nicht unsicher. Uebrige Zeitzeilen (z. B. Schiffspositionen, Stoersignale) sind Kontext.
+  const vocab = profile.objects.map(fold);
+  const srcRel = new Map(state.sources.map((q) => [q.id, q.relevant !== false]));
+  const relevant = (r) => (r.confidence ?? 1) >= 0.5 && (vocab.some((v) => fold(`${r.data.objekt || ""} ${r.data.text || ""}`).includes(v)) || (srcRel.get(r.source_id) && r.data.lat != null && !r.data.von));
+  const timed = all.filter(relevant), ctxTimed = all.filter((r) => !relevant(r));
+  step("Relevanz bestimmen", "FILTER", all.map((r) => r.id), { vokabular: profile.objects, min_konfidenz: 0.5 }, { ereigniszeilen: timed.length, kontextzeilen: ctxTimed.length, kontext_beispiele: ctxTimed.slice(0, 50).map((r) => r.id) }, "relevant ⇔ Konfidenz ≥ 0,5 ∧ (Objekt-Vokabular ∨ einschlägige Quelle mit Ort)");
+  const excluded = [];
   timed.sort((a, b) => minutes(a) - minutes(b));
   const clusters = [];
   for (const r of timed) {
     const t = minutes(r);
-    const c = clusters.find((c) => t - c.last <= windowMin && (r.data.lat == null || c.lat == null || haversineKm(c, r.data) <= radiusKm));
+    let c = null;
+    for (let k = clusters.length - 1; k >= 0 && t - clusters[k].first <= windowMin * 12; k--) {
+      const x = clusters[k];
+      if (t - x.last <= windowMin && t - x.first <= maxSpan && (r.data.lat == null || x.lat == null || haversineKm(x, r.data) <= radiusKm)) { c = x; break; }
+    }
     if (c) {
       c.members.push(r); c.last = Math.max(c.last, t);
       const geo = c.members.filter((m) => m.data.lat != null);
       if (geo.length) { c.lat = geo.reduce((s, m) => s + m.data.lat, 0) / geo.length; c.lon = geo.reduce((s, m) => s + m.data.lon, 0) / geo.length; }
     } else clusters.push({ members: [r], first: t, last: t, lat: r.data.lat ?? null, lon: r.data.lon ?? null });
   }
-  step("Ereignisse bilden (Clustering)", "CLUSTER", timed.map((r) => r.id), { zeitfenster_min: windowMin, radius_km: radiusKm }, { ereignisse: clusters.map((c) => c.members.map((m) => m.id)) }, "gleiches Ereignis ⇔ Δt ≤ Fenster ∧ Distanz(Schwerpunkt) ≤ Radius");
+  // Kontextzeilen an naheliegende Ereignisse anhaengen (zaehlen nicht als Bestaetigung)
+  for (const r of ctxTimed) {
+    const t = minutes(r);
+    const c = clusters.find((x) => t >= x.first - windowMin && t <= x.last + windowMin && (r.data.lat == null || x.lat == null || haversineKm(x, r.data) <= radiusKm));
+    if (c) (c.context ||= []).push(r);
+  }
+  step("Ereignisse bilden (Clustering)", "CLUSTER", timed.map((r) => r.id), { zeitfenster_min: windowMin, radius_km: radiusKm, max_dauer_min: maxSpan }, { ereignisse: clusters.map((c) => c.members.map((m) => m.id)) }, "gleiches Ereignis ⇔ Δt ≤ Fenster ∧ Dauer ≤ Max ∧ Distanz(Schwerpunkt) ≤ Radius; Kontextzeilen werden angehängt");
 
   const events = clusters.map((c) => {
     const m = c.members, srcs = uniq(m.map((x) => x.source_id));
@@ -129,7 +142,7 @@ export function runLagebild(state, scope = { terms: [] }, title) {
     const lowConf = m.filter((x) => x.corrections.some((k) => k.field === "zeit" && k.confidence < 0.7));
     if (lowConf.length) conflicts.push(`${lowConf.length} Zeitangabe(n) nur unsicher normalisiert`);
     return {
-      id: nextId(state, "CL"), members: m.map((x) => x.id), sources: srcs, start: c.first, end: c.last, dauer_min: c.last - c.first,
+      id: nextId(state, "CL"), members: m.map((x) => x.id), kontext: (c.context || []).map((x) => x.id), sources: srcs, start: c.first, end: c.last, dauer_min: c.last - c.first,
       lat: c.lat != null ? round(c.lat, 3) : null, lon: c.lon != null ? round(c.lon, 3) : null,
       anzahl_min: vals.length ? Math.min(...vals) : null, anzahl_max: vals.length ? Math.max(...vals) : null, anzahl_modus: modeCount, anzahl_belege: counts,
       confidence, places, objects, actors, refs, conflicts,
@@ -142,14 +155,19 @@ export function runLagebild(state, scope = { terms: [] }, title) {
 
   const sname = (id) => state.sources.find((s) => s.id === id)?.name || id;
   const lines = [];
-  lines.push(`${rows.length} Beobachtungen aus ${uniq(rows.map((r) => r.source_id)).length} Quellen ausgewertet; ${events.length} Ereignis(se) gebildet.`);
-  for (const e of events.sort((a, b) => b.members.length - a.members.length)) {
+  lines.push(`${rows.length} Beobachtungen aus ${uniq(rows.map((r) => r.source_id)).length} Quellen ausgewertet; ${events.length} Ereignis(se) gebildet (Zeitfenster ${windowMin} min, Radius ${radiusKm} km).`);
+  events.sort((a, b) => b.sources.length - a.sources.length || b.members.length - a.members.length);
+  const multi = events.filter((e) => e.sources.length >= 2), single = events.filter((e) => e.sources.length < 2);
+  if (single.length) lines.push(`${multi.length} Ereignis(se) durch mehrere unabhängige Quellen gestützt; ${single.length} Einzelmeldung(en) (nur eine Quelle, z. B. Hintergrundrauschen, Fehlalarm oder unbestätigte Beobachtung).`);
+  for (const e of multi.slice(0, 25)) {
+    e.single = e.sources.length < 2;
     const where = e.places.length ? `Raum ${e.places.slice(0, 3).join(", ")}` : e.lat != null ? `Position ${e.lat} N, ${e.lon} E` : "Ort unbekannt";
     const cnt = e.anzahl_max != null ? ` Gemeldete Anzahl ${e.anzahl_min === e.anzahl_max ? e.anzahl_max : `${e.anzahl_min}–${e.anzahl_max}, am häufigsten ${e.anzahl_modus}`} (${e.anzahl_belege.map((b) => `${b.n}× ${b.row}`).join(", ")}); meist als „${e.objects[0] || "Objekt"}“ beschrieben.` : "";
     lines.push(`${e.id}: ${fmtT(e.start)}–${fmtT(e.end).slice(-5)} Uhr, ${where}.${cnt} ${e.sources.length} unabhängige Quelle(n) (${e.sources.map(sname).join(", ")}) → Bestätigung ${e.confidence}.${e.conflicts.length ? " Achtung: " + e.conflicts.join("; ") + "." : ""}${e.actors.length ? " Beteiligte/Objekte: " + e.actors.concat(e.refs).slice(0, 6).join(", ") + "." : ""}`);
   }
-  if (excluded.length) lines.push(`Ausgeschlossen (anderer Tag): ${excluded.map((r) => r.id).join(", ")}.`);
-  if (context.length) lines.push(`${context.length} Zeile(n) ohne Zeitbezug als Kontext geführt.`);
+  if (multi.length > 25) lines.push(`… ${multi.length - 25} weitere gestützte Ereignisse in der Tabelle.`);
+  if (single.length) lines.push(`Einzelmeldungen: ${single.slice(0, 12).map((e) => `${e.id} (${fmtT(e.start)}, ${e.places[0] || e.objects[0] || "—"})`).join(", ")}${single.length > 12 ? ", …" : ""}.`);
+  if (context.length || ctxTimed.length) lines.push(`${context.length} Zeile(n) ohne Zeitbezug und ${ctxTimed.length} Kontextzeile(n) (z. B. Positionsspuren, unsichere Signale) nicht als Beleg gezählt.`);
   step("Lagebild zusammenfassen", "SUMMARIZE", events.flatMap((e) => e.members), {}, { text: lines }, "Vorlage; jede Aussage verweist auf Zeilen-IDs");
 
   anl.result = { events, context: context.map((r) => r.id), excluded: excluded.map((r) => r.id), summary: lines };
@@ -341,15 +359,30 @@ export function suggestLinks(state) {
   const exists = new Set(state.links.map((l) => [l.from, l.to].sort().join("|")));
   const made = [];
   const win = Math.min(profile.cluster.windowMin / 2, 20), rad = Math.min(profile.cluster.radiusKm / 2, 15);
-  for (let i = 0; i < rows.length; i++) {
-    const a = rows[i], cands = [];
-    for (let j = i + 1; j < rows.length; j++) {
-      const b = rows[j];
+  // Kandidaten nur aus gleichem Zeit-Eimer bzw. gleicher Referenz/Akteur (statt n² Vergleiche)
+  const idx = new Map(), add = (k, r) => { if (!idx.has(k)) idx.set(k, []); idx.get(k).push(r); };
+  const refsOf = (r) => String(r.data.referenzen || "").split(";").map((s) => s.trim()).filter(Boolean);
+  const actsOf = (r) => String(r.data.akteure || "").split(";").map((s) => fold(s.trim())).filter(Boolean);
+  for (const r of rows) {
+    const t = r.data.zeit ? minutes(r) : null;
+    if (t != null) add("t" + Math.floor(t / win), r);
+    refsOf(r).forEach((x) => add("r" + x, r));
+    actsOf(r).forEach((x) => add("a" + x, r));
+  }
+  for (const a of rows) {
+    const cands = [], seen = new Set();
+    const ta0 = a.data.zeit ? minutes(a) : null;
+    const keys = [...refsOf(a).map((x) => "r" + x), ...actsOf(a).map((x) => "a" + x)];
+    if (ta0 != null) { const k = Math.floor(ta0 / win); keys.push("t" + k, "t" + (k + 1), "t" + (k - 1)); }
+    const pool = keys.flatMap((k) => (idx.get(k) || []).length > 400 ? [] : idx.get(k) || []);
+    for (const b of pool) {
+      if (b.id <= a.id || seen.has(b.id)) continue;
+      seen.add(b.id);
       if (a.source_id === b.source_id) continue;
       const reasons = [];
       let score = 0;
-      const ra = String(a.data.referenzen || "").split(";").map((s) => s.trim()).filter(Boolean);
-      const shared = ra.filter((x) => String(b.data.referenzen || "").split(";").map((s) => s.trim()).includes(x));
+      const ra = refsOf(a);
+      const shared = ra.filter((x) => refsOf(b).includes(x));
       if (shared.length) { reasons.push(`gleiche Referenz ${shared.join(", ")}`); score += 0.5; }
       const ta = minutes(a), tb = minutes(b);
       if (a.data.zeit && b.data.zeit && ta != null && tb != null && Math.abs(ta - tb) <= win) {
@@ -359,8 +392,7 @@ export function suggestLinks(state) {
           if (d <= rad) { reasons.push(`Distanz ${round(d, 1)} km`); score += 0.3 * (1 - d / (rad + 1)); } else continue;
         }
       }
-      const aa = String(a.data.akteure || "").split(";").map((s) => fold(s.trim())).filter(Boolean);
-      const sa = aa.filter((x) => String(b.data.akteure || "").split(";").map((s) => fold(s.trim())).includes(x));
+      const sa = actsOf(a).filter((x) => actsOf(b).includes(x));
       if (sa.length) { reasons.push("gleicher Akteur"); score += 0.36; }
       if (score >= 0.35) cands.push({ b, score: round(Math.min(score, 0.99), 2), reasons });
     }
