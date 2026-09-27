@@ -1,0 +1,15 @@
+{
+  "name": "katoptrik",
+  "private": true,
+  "description": "Evidence Workspace: mehrere Quellen strukturiert, nachvollziehbar berechnet und verknüpft – läuft statisch auf GitHub Pages.",
+  "type": "module",
+  "scripts": {
+    "start": "http-server -p 8765 -c-1 .",
+    "test": "node tests/run.mjs",
+    "samples": "python3 tools/generate_samples.py"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "playwright": "^1.56.1"
+  }
+}

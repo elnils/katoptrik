@@ -1,0 +1,206 @@
+{
+ "system": "Detektionssystem (synthetisch)",
+ "exportiert": "2026-09-25T08:00:00Z",
+ "detektionen": [
+  {
+   "id": "DET-0001",
+   "ts": "2026-09-22T21:40:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.351,
+   "lon": 10.161,
+   "klasse": "UAV",
+   "anzahl": 2,
+   "score": 0.78
+  },
+  {
+   "id": "DET-0002",
+   "ts": "2026-09-22T21:50:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.297,
+   "lon": 10.18,
+   "klasse": "UAV",
+   "anzahl": 2,
+   "score": 0.7
+  },
+  {
+   "id": "DET-0003",
+   "ts": "2026-09-22T22:01:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.326,
+   "lon": 10.169,
+   "klasse": "UAV",
+   "anzahl": 2,
+   "score": 0.89
+  },
+  {
+   "id": "DET-0004",
+   "ts": "2026-09-23T00:10:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.166,
+   "lon": 12.087,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.85
+  },
+  {
+   "id": "DET-0005",
+   "ts": "2026-09-23T00:23:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.193,
+   "lon": 12.085,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.8
+  },
+  {
+   "id": "DET-0006",
+   "ts": "2026-09-23T00:31:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.201,
+   "lon": 12.102,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.72
+  },
+  {
+   "id": "DET-0007",
+   "ts": "2026-09-23T00:42:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.148,
+   "lon": 12.073,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.93
+  },
+  {
+   "id": "DET-0008",
+   "ts": "2026-09-23T19:18:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.454,
+   "lon": 13.38,
+   "klasse": "UAV",
+   "anzahl": 1,
+   "score": 0.87
+  },
+  {
+   "id": "DET-0009",
+   "ts": "2026-09-23T19:28:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.419,
+   "lon": 13.384,
+   "klasse": "UAV",
+   "anzahl": 1,
+   "score": 0.95
+  },
+  {
+   "id": "DET-0010",
+   "ts": "2026-09-23T19:38:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.397,
+   "lon": 13.41,
+   "klasse": "UAV",
+   "anzahl": 1,
+   "score": 0.8
+  },
+  {
+   "id": "DET-0011",
+   "ts": "2026-09-24T00:32:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.601,
+   "lon": 11.324,
+   "klasse": "UAV",
+   "anzahl": 4,
+   "score": 0.72
+  },
+  {
+   "id": "DET-0012",
+   "ts": "2026-09-24T00:41:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.571,
+   "lon": 11.332,
+   "klasse": "UAV",
+   "anzahl": 4,
+   "score": 0.74
+  },
+  {
+   "id": "DET-0013",
+   "ts": "2026-09-24T00:53:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.567,
+   "lon": 11.255,
+   "klasse": "UAV",
+   "anzahl": 4,
+   "score": 0.7
+  },
+  {
+   "id": "DET-0014",
+   "ts": "2026-09-24T01:02:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.576,
+   "lon": 11.33,
+   "klasse": "UAV",
+   "anzahl": 4,
+   "score": 0.73
+  },
+  {
+   "id": "DET-0015",
+   "ts": "2026-09-24T20:53:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 53.931,
+   "lon": 10.823,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.85
+  },
+  {
+   "id": "DET-0016",
+   "ts": "2026-09-24T21:02:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 53.986,
+   "lon": 10.814,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.81
+  },
+  {
+   "id": "DET-0017",
+   "ts": "2026-09-24T21:10:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 53.976,
+   "lon": 10.877,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.97
+  },
+  {
+   "id": "DET-0018",
+   "ts": "2026-09-25T01:33:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.296,
+   "lon": 10.114,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.77
+  },
+  {
+   "id": "DET-0019",
+   "ts": "2026-09-25T01:41:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.289,
+   "lon": 10.133,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.81
+  },
+  {
+   "id": "DET-0020",
+   "ts": "2026-09-25T01:53:00Z",
+   "sensor": "DroneShield-Mobil",
+   "lat": 54.34,
+   "lon": 10.124,
+   "klasse": "UAV",
+   "anzahl": 3,
+   "score": 0.95
+  }
+ ]
+}
